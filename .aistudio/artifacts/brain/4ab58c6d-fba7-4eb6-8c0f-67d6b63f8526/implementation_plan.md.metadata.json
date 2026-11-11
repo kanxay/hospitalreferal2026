@@ -1,6 +1,0 @@
-{
-  "summary":  "Eliminated the blank second page on A4 print and PDF download. Strict page height constraints, zeroed-out outer flow padding, and calibrated signature height ensure the referral slip prints cleanly on exactly 1 single A4 sheet.",
-  "updatedAt":  "2026-11-11T12:38:22.519718009Z",
-  "requestFeedback":  true,
-  "userFacing":  true
-}
