@@ -12,6 +12,7 @@ import { ReferralDetail } from './components/ReferralDetail';
 import { ReferralA4Print } from './components/ReferralA4Print';
 import { DatabaseSettingsModal } from './components/DatabaseSettingsModal';
 import { HospitalManagementModal } from './components/HospitalManagementModal';
+import { AdminSettingsView } from './components/AdminSettingsView';
 import { LoginView } from './components/LoginView';
 import { dbService } from './services/db';
 import { 
@@ -34,7 +35,7 @@ export default function App() {
   });
 
   const [referrals, setReferrals] = useState<ReferralRecord[]>([]);
-  const [currentView, setCurrentView] = useState<'dashboard' | 'new-referral' | 'detail' | 'print'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'new-referral' | 'detail' | 'print' | 'settings'>('dashboard');
   const [activeReferral, setActiveReferral] = useState<ReferralRecord | null>(null);
   const [triageFilter, setTriageFilter] = useState<string>('all');
   
@@ -221,13 +222,9 @@ export default function App() {
 
       {/* Top Bar Header */}
       <Header
-        currentTab={currentView === 'new-referral' ? 'new-referral' : 'dashboard'}
+        currentTab={currentView === 'new-referral' ? 'new-referral' : currentView === 'settings' ? 'settings' : 'dashboard'}
         onSelectTab={(tab) => {
-          if (currentUser.role === 'admin') {
-            setCurrentView('dashboard');
-          } else {
-            setCurrentView(tab);
-          }
+          setCurrentView(tab);
         }}
         dbStatus={dbStatus}
         onOpenDbSettings={() => setIsDbModalOpen(true)}
@@ -235,7 +232,13 @@ export default function App() {
         isRefreshing={isRefreshing}
         currentUser={currentUser}
         onLogout={handleLogout}
-        onOpenHospitalManagement={() => setIsHospitalModalOpen(true)}
+        onOpenHospitalManagement={() => {
+          if (currentUser.role === 'admin') {
+            setCurrentView('settings');
+          } else {
+            setIsHospitalModalOpen(true);
+          }
+        }}
       />
 
       {/* Main Content Area */}
@@ -270,6 +273,15 @@ export default function App() {
                 />
 
               </div>
+            )}
+
+            {/* View: Admin Settings Workspace (Subtabs: Hospitals & ICD-10 CSV Import) */}
+            {currentView === 'settings' && currentUser.role === 'admin' && (
+              <AdminSettingsView
+                hospitals={hospitals}
+                onRefreshHospitals={loadHospitals}
+                onBackToReferrals={() => setCurrentView('dashboard')}
+              />
             )}
 
             {/* View: 5-Step New Referral Intake Form (Accessible only to District Hospitals) */}

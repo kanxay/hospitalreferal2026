@@ -36,6 +36,7 @@ import {
   GCS_MOTOR_OPTIONS,
   calculateGcs 
 } from '../data/facilities';
+import { Icd10Combobox } from './Icd10Combobox';
 
 interface ReferralFormProps {
   onCancel: () => void;
@@ -452,7 +453,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   required
                   value={patientName}
                   onChange={(e) => setPatientName(e.target.value)}
-                  placeholder="ຕົວຢ່າງ: ທ້າວ ຄຳສິງ ວົງສະຫວັນ"
                   className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 text-sm bg-white"
                 />
               </div>
@@ -479,7 +479,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   required
                   value={age}
                   onChange={(e) => setAge(e.target.value === '' ? '' : Number(e.target.value))}
-                  placeholder="45"
                   className="w-full p-2.5 border border-slate-300 rounded-xl font-mono focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
                 />
               </div>
@@ -490,7 +489,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   type="text"
                   value={idCardOrHN}
                   onChange={(e) => setIdCardOrHN(e.target.value)}
-                  placeholder="HN-PS-8921"
                   className="w-full p-2.5 border border-slate-300 rounded-xl font-mono focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
                 />
               </div>
@@ -501,7 +499,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   type="text"
                   value={occupation}
                   onChange={(e) => setOccupation(e.target.value)}
-                  placeholder="ຊາວກະສິກອນ, ພະນັກງານ..."
                   className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
                 />
               </div>
@@ -512,7 +509,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   type="text"
                   value={village}
                   onChange={(e) => setVillage(e.target.value)}
-                  placeholder="ບ້ານ ຫຼັກ 35"
                   className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
                 />
               </div>
@@ -532,7 +528,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                       setDistrict(dists[0]);
                     }
                   }}
-                  placeholder="ເລືອກ ຫຼື ພິມຊື່ແຂວງ..."
                   className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
                 />
                 <datalist id="form-province-list">
@@ -550,7 +545,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   list="form-district-list"
                   value={district}
                   onChange={(e) => setDistrict(e.target.value)}
-                  placeholder="ເລືອກ ຫຼື ພິມຊື່ເມືອງ..."
                   className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
                 />
                 <datalist id="form-district-list">
@@ -561,12 +555,11 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">ເບີໂທຕິດຕໍ່ຄົນເຈັບ/ຍາດ</label>
+                <label className="block font-bold text-slate-700 mb-1">ເບີໂທຕິດຕໍ່ຄົນເຈັບ / ຍາດພີ່ນ້ອງ</label>
                 <input
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="020 xxxx xxxx"
                   className="w-full p-2.5 border border-slate-300 rounded-xl font-mono focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
                 />
               </div>
@@ -624,12 +617,11 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">ເວລາສົ່ງຕົວ *</label>
+                <label className="block font-bold text-slate-700 mb-1">ເວລາສົ່ງຕົວ (ຊົ່ວໂມງ:ນາທີ) *</label>
                 <input
                   type="text"
                   value={transferTime}
                   onChange={(e) => setTransferTime(e.target.value)}
-                  placeholder="17:30"
                   className="w-full p-2.5 border border-slate-300 rounded-xl bg-white font-mono focus:border-emerald-600 focus:outline-none focus:ring-0"
                 />
               </div>
@@ -642,16 +634,16 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
         {currentStep === 2 && (
           <div className="space-y-4 animate-fade-in text-xs">
             <div>
-              <label className="block font-bold text-emerald-950 mb-1 text-sm">
-                ການບົ່ງມະຕິພະຍາດຫຼັກ (Provisional / Principal Diagnosis) *
+              <label className="block font-bold text-emerald-950 mb-1 text-sm flex items-center justify-between">
+                <span>ການບົ່ງມະຕິພະຍາດຫຼັກ (Provisional / Principal Diagnosis) *</span>
+                <span className="text-[11px] font-mono font-normal text-emerald-800">
+                  ຄົ້ນຫາຕາມລະຫັດ ICD-10 ຫຼື ຊື່ພະຍາດ
+                </span>
               </label>
-              <input
-                type="text"
+              <Icd10Combobox
                 required
                 value={provisionalDiagnosis}
-                onChange={(e) => setProvisionalDiagnosis(e.target.value)}
-                placeholder="ຕົວຢ່າງ: Severe TBI with Epidural Hematoma, Acute Appendicitis, Severe PPH, NSTEMI"
-                className="w-full p-3 border border-emerald-400 rounded-xl bg-emerald-50/40 text-emerald-950 font-bold focus:border-emerald-600 focus:outline-none focus:ring-0"
+                onChange={setProvisionalDiagnosis}
               />
             </div>
 
@@ -663,7 +655,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 type="text"
                 value={chiefComplaint}
                 onChange={(e) => setChiefComplaint(e.target.value)}
-                placeholder="ຕົວຢ່າງ: ໝົດສະຕິຫຼັງອຸບັດຕິເຫດ 1 ຊົ່ວໂມງ, ເຈັບແໜ້ນໜ້າເອິກຮຸນແຮງ 3 ຊົ່ວໂມງ"
                 className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
               />
             </div>
@@ -676,7 +667,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 rows={3}
                 value={presentIllness}
                 onChange={(e) => setPresentIllness(e.target.value)}
-                placeholder="ບັນທຶກລຳດັບເຫດການທີ່ເກີດຂຶ້ນ, ເວລາເລີ່ມມີອາການ, ຄວາມຮຸນແຮງ, ອາການຮ່ວມ..."
                 className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
               />
             </div>
@@ -690,7 +680,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   rows={2}
                   value={pastMedicalHistory}
                   onChange={(e) => setPastMedicalHistory(e.target.value)}
-                  placeholder="ໂລກປະຈຳຕົວ: ຄວາມດັນ, ເບົາຫວານ, ຫົວໃຈ, ເຄີຍຜ່າຕັດ..."
                   className="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                 />
               </div>
@@ -703,7 +692,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   rows={2}
                   value={currentMedications}
                   onChange={(e) => setCurrentMedications(e.target.value)}
-                  placeholder="Amlodipine 5mg, Metformin 500mg..."
                   className="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                 />
               </div>
@@ -717,7 +705,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 type="text"
                 value={allergies}
                 onChange={(e) => setAllergies(e.target.value)}
-                placeholder="ປະຕິເສດການແພ້ຢາ ຫຼື ແພ້ Penicillin..."
                 className="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
               />
             </div>
@@ -745,7 +732,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     type="text"
                     value={wbc}
                     onChange={(e) => setWbc(e.target.value)}
-                    placeholder="12,500"
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0 focus:shadow-none"
                   />
                 </div>
@@ -756,7 +742,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     type="text"
                     value={hct}
                     onChange={(e) => setHct(e.target.value)}
-                    placeholder="36%"
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0 focus:shadow-none"
                   />
                 </div>
@@ -767,7 +752,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     type="text"
                     value={hb}
                     onChange={(e) => setHb(e.target.value)}
-                    placeholder="12.0"
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0 focus:shadow-none"
                   />
                 </div>
@@ -778,7 +762,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     type="text"
                     value={plt}
                     onChange={(e) => setPlt(e.target.value)}
-                    placeholder="250,000"
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0 focus:shadow-none"
                   />
                 </div>
@@ -789,7 +772,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     type="text"
                     value={glucose}
                     onChange={(e) => setGlucose(e.target.value)}
-                    placeholder="110"
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0 focus:shadow-none"
                   />
                 </div>
@@ -800,18 +782,16 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     type="text"
                     value={creatinine}
                     onChange={(e) => setCreatinine(e.target.value)}
-                    placeholder="0.9"
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0 focus:shadow-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-600 mb-1">Urea / BUN</label>
+                  <label className="block font-semibold text-slate-600 mb-1">Urea / BUN (mg/dL)</label>
                   <input
                     type="text"
                     value={urea}
                     onChange={(e) => setUrea(e.target.value)}
-                    placeholder="18"
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0 focus:shadow-none"
                   />
                 </div>
@@ -823,37 +803,33 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                       type="text"
                       value={k}
                       onChange={(e) => setK(e.target.value)}
-                      placeholder="K: 4.0"
                       className="w-1/2 p-2 border border-slate-300 rounded-lg bg-white shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0 focus:shadow-none"
                     />
                     <input
                       type="text"
                       value={na}
                       onChange={(e) => setNa(e.target.value)}
-                      placeholder="Na: 138"
                       className="w-1/2 p-2 border border-slate-300 rounded-lg bg-white shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0 focus:shadow-none"
                     />
                   </div>
                 </div>
 
                 <div className="col-span-2">
-                  <label className="block font-semibold text-slate-600 mb-1">Dengue NS1 / IgM-IgG</label>
+                  <label className="block font-semibold text-slate-600 mb-1">Dengue NS1 / IgM-IgG (ຜົນກວດໄຂ້ເລືອດອອກ)</label>
                   <input
                     type="text"
                     value={dengueNs1}
                     onChange={(e) => setDengueNs1(e.target.value)}
-                    placeholder="Negative, Positive NS1..."
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white font-sans shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0 focus:shadow-none"
                   />
                 </div>
 
                 <div className="col-span-2">
-                  <label className="block font-semibold text-slate-600 mb-1">ຜົນກວດອື່ນໆ (Other Labs)</label>
+                  <label className="block font-semibold text-slate-600 mb-1">ຜົນກວດເລືອດອື່ນໆ (Other Labs: Troponin-T, Malaria, ABG)</label>
                   <input
                     type="text"
                     value={otherLabs}
                     onChange={(e) => setOtherLabs(e.target.value)}
-                    placeholder="Troponin-T, Malaria RDT, ABG..."
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white font-sans shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0 focus:shadow-none"
                   />
                 </div>
@@ -892,7 +868,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     list="imaging-english-options"
                     value={cxr}
                     onChange={(e) => setCxr(e.target.value)}
-                    placeholder="ເລືອກ ຫຼື ພິມ: None, Normal, Pneumonia, Pleural Effusion..."
                     className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                   <div className="flex flex-wrap gap-1.5 pt-1">
@@ -955,7 +930,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     list="imaging-english-options"
                     value={ultrasound}
                     onChange={(e) => setUltrasound(e.target.value)}
-                    placeholder="ເລືອກ ຫຼື ພິມ: None, Normal, Intra-abdominal Free Fluid (FAST Positive)..."
                     className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                   <div className="flex flex-wrap gap-1.5 pt-1">
@@ -1011,7 +985,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     list="imaging-english-options"
                     value={ctScan}
                     onChange={(e) => setCtScan(e.target.value)}
-                    placeholder="ເລືອກ ຫຼື ພິມ: None, Normal, Intracranial Hemorrhage / Acute TBI..."
                     className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                   <div className="flex flex-wrap gap-1.5 pt-1">
@@ -1073,14 +1046,13 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-none">
                 <div>
-                  <label className="block font-semibold text-slate-600 mb-1 uppercase text-[11px]">BP (mmHg)</label>
+                  <label className="block font-semibold text-slate-600 mb-1 uppercase text-[11px]">BP (mmHg) - Sys / Dia</label>
                   <div className="flex items-center gap-1 font-mono">
                     <input
                       type="number"
                       value={bpSystolic}
                       onChange={(e) => setBpSystolic(e.target.value === '' ? '' : Number(e.target.value))}
                       className="w-16 p-2 border border-slate-300 rounded-lg text-center bg-white shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0"
-                      placeholder="Sys"
                     />
                     <span>/</span>
                     <input
@@ -1088,13 +1060,12 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                       value={bpDiastolic}
                       onChange={(e) => setBpDiastolic(e.target.value === '' ? '' : Number(e.target.value))}
                       className="w-16 p-2 border border-slate-300 rounded-lg text-center bg-white shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0"
-                      placeholder="Dia"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-600 mb-1 uppercase text-[11px]">PR (bpm)</label>
+                  <label className="block font-semibold text-slate-600 mb-1 uppercase text-[11px]">PR ຊີບພະຈອນ (bpm)</label>
                   <input
                     type="number"
                     value={pulseRate}
@@ -1104,7 +1075,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-600 mb-1 uppercase text-[11px]">RR (/min)</label>
+                  <label className="block font-semibold text-slate-600 mb-1 uppercase text-[11px]">RR ອັດຕາຫາຍໃຈ (/min)</label>
                   <input
                     type="number"
                     value={respiratoryRate}
@@ -1114,7 +1085,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-600 mb-1 uppercase text-[11px]">Temp (°C)</label>
+                  <label className="block font-semibold text-slate-600 mb-1 uppercase text-[11px]">Temp ອຸນຫະພູມ (°C)</label>
                   <input
                     type="number"
                     step="0.1"
@@ -1125,7 +1096,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-600 mb-1 uppercase text-[11px]">SpO2 (%)</label>
+                  <label className="block font-semibold text-slate-600 mb-1 uppercase text-[11px]">SpO2 ອົກຊີແຊນ (%)</label>
                   <input
                     type="number"
                     min="0"
@@ -1147,12 +1118,11 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 </div>
 
                 <div className="col-span-2">
-                  <label className="block font-semibold text-slate-600 mb-1 uppercase text-[11px]">Oxygen Therapy</label>
+                  <label className="block font-semibold text-slate-600 mb-1 uppercase text-[11px]">Oxygen Therapy (ການໃຫ້ອົກຊີແຊນ)</label>
                   <input
                     type="text"
                     value={oxygenTherapy}
                     onChange={(e) => setOxygenTherapy(e.target.value)}
-                    placeholder="Room air, Cannula 3L, Mask with bag 10L, ET-Tube..."
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                 </div>
@@ -1295,7 +1265,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     list="exam-motor-list"
                     value={motorWeakness}
                     onChange={(e) => setMotorWeakness(e.target.value)}
-                    placeholder="ເລືອກ ຫຼື ພິມ: ປົກກະຕິ, ອຳມະພຶກເຄິ່ງຊິກ..."
                     className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                   <div className="flex flex-wrap gap-1 mt-1">
@@ -1326,7 +1295,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 {/* Pupils */}
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">
-                    Pupils (ຮູມ່ານຕາ ຊ້າຍ - ຂວາ)
+                    Pupils ຮູມ່ານຕາ (ຊ້າຍ Left - ຂວາ Right)
                   </label>
                   <div className="flex gap-2">
                     <div className="w-1/2">
@@ -1335,7 +1304,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                         list="exam-pupil-list"
                         value={pupilLeft}
                         onChange={(e) => setPupilLeft(e.target.value)}
-                        placeholder="L: 3mm RTL"
                         className="w-full p-2.5 border border-slate-300 rounded-xl bg-white font-mono text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                       />
                     </div>
@@ -1345,7 +1313,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                         list="exam-pupil-list"
                         value={pupilRight}
                         onChange={(e) => setPupilRight(e.target.value)}
-                        placeholder="R: 3mm RTL"
                         className="w-full p-2.5 border border-slate-300 rounded-xl bg-white font-mono text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                       />
                     </div>
@@ -1378,7 +1345,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     list="exam-lung-list"
                     value={lungExam}
                     onChange={(e) => setLungExam(e.target.value)}
-                    placeholder="Clear bilaterally, Wheezing, Crepitation..."
                     className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                   <div className="flex flex-wrap gap-1 mt-1">
@@ -1416,7 +1382,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     list="exam-heart-list"
                     value={heartExam}
                     onChange={(e) => setHeartExam(e.target.value)}
-                    placeholder="Normal S1 S2, Tachycardia, Murmur..."
                     className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                   <div className="flex flex-wrap gap-1 mt-1">
@@ -1447,7 +1412,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     list="exam-abdomen-list"
                     value={abdomenExam}
                     onChange={(e) => setAbdomenExam(e.target.value)}
-                    placeholder="Soft, non-tender, Guarding, Rebound tenderness..."
                     className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                   <div className="flex flex-wrap gap-1 mt-1">
@@ -1485,7 +1449,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     list="exam-other-list"
                     value={otherFindings}
                     onChange={(e) => setOtherFindings(e.target.value)}
-                    placeholder="Battle sign, Pale conjunctiva, Cyanosis..."
                     className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                   <div className="flex flex-wrap gap-1 mt-1">
@@ -1531,7 +1494,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 required
                 value={initialTreatment}
                 onChange={(e) => setInitialTreatment(e.target.value)}
-                placeholder="IV NSS 1000ml, On O2 cannula, Ceftriaxone 2g IV stat, Collar fixed, Splint applied..."
                 className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
               />
             </div>
@@ -1545,7 +1507,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 required
                 value={transferReason}
                 onChange={(e) => setTransferReason(e.target.value)}
-                placeholder="ເກີນຂີດຄວາມສາມາດໃນການຜ່າຕັດ, ຕ້ອງການນອນ ICU, ຕ້ອງການກວດ CT-Brain..."
                 className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
               />
             </div>
@@ -1560,7 +1521,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   required
                   value={targetCoordinator}
                   onChange={(e) => setTargetCoordinator(e.target.value)}
-                  placeholder="ດຣ. ຄຳພັນ (ແພດເວນ ER ໂຮງໝໍແຂວງ)"
                   className="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                 />
               </div>
@@ -1589,7 +1549,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   required
                   value={referringDoctor}
                   onChange={(e) => setReferringDoctor(e.target.value)}
-                  placeholder="ດຣ. ສົມສັກ ແສງທອງ"
                   className="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                 />
               </div>
@@ -1603,7 +1562,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   required
                   value={referringDoctorPhone}
                   onChange={(e) => setReferringDoctorPhone(e.target.value)}
-                  placeholder="020 xxxx xxxx"
                   className="w-full p-2.5 border border-slate-300 rounded-xl font-mono bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                 />
               </div>
@@ -1659,7 +1617,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     type="text"
                     value={ambulanceCode}
                     onChange={(e) => setAmbulanceCode(e.target.value)}
-                    placeholder="ຫຼື ປ້ອນເລກທະບຽນລົດອື່ນ..."
                     className="w-full p-2.5 border border-slate-300 rounded-xl font-mono text-xs bg-white shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                   <p className="text-[11px] text-slate-500">
@@ -1676,7 +1633,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   type="number"
                   value={etaMinutes}
                   onChange={(e) => setEtaMinutes(e.target.value === '' ? '' : Number(e.target.value))}
-                  placeholder="30"
                   className="w-full p-2.5 border border-slate-300 rounded-xl font-mono bg-white shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0"
                 />
               </div>
@@ -1689,7 +1645,6 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   type="text"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="ກຽມເລືອດກຣຸບ O+, ກຽມຫ້ອງ OR ດ່ວນ..."
                   className="w-full p-2.5 border border-slate-300 rounded-xl bg-white shadow-none appearance-none focus:border-emerald-600 focus:outline-none focus:ring-0"
                 />
               </div>

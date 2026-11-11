@@ -1,99 +1,99 @@
-# Complete Elimination of Shadows on Clinical Referral Intake Form
+# ICD-10 Diagnosis Searchable Combobox & Admin Settings CSV Upload
 
-Eradicate all box-shadows, inner shadows, and focus glow halos across all input fields, textareas, selects, and containers in the Clinical Referral Intake form (specifically resolving the shadow observed on the WBC 12,500 input and all lab/clinical fields) using strict global CSS rules and explicit flat border styling.
+Transform the Provisional/Principal Diagnosis field into a high-performance searchable dropdown supporting ICD-10 code and disease name search, backed by an Admin Settings panel with subtabs (`ຈັດການບັນຊີໂຮງໝໍເມືອງ / ສຸກສາລາ` and `ຕັ້ງຄ່າບົ່ງມະຕິ`) capable of uploading and querying full 74,889-row ICD-10 CSV datasets using browser IndexedDB.
 
 ## User Review & Critical Decisions
 
 > [!IMPORTANT]
-> The user confirmed that shadows were visible inside and around the input box itself (such as the WBC input) and selected the approach to **apply strict global CSS to remove all box-shadows**.
-
-- **Confirmed Decision 1**: Shadows are present on/around input boxes (including browser default inner shadows and WebKit appearances).
-- **Confirmed Decision 2**: Implement an uncompromising global CSS rule removing `box-shadow`, `-webkit-box-shadow`, `-moz-box-shadow`, and `outline` across all form elements, backed by Tailwind `shadow-none` and `focus:ring-0`.
+> The user confirmed the following architectural and UX choices:
+> 1. **Diagnosis Format**: Combined code and name format when selected (e.g., `I21.9 - Acute myocardial infarction`).
+> 2. **Preloaded Codes**: No preloaded default codes; only load codes after the user uploads their CSV file. If empty, allow free typing with a quiet note pointing to the Admin upload.
+> 3. **Storage Engine**: High-speed browser IndexedDB database for instant, zero-latency search without memory bloat or server round-trips for 74,889 rows.
 
 ---
 
 ## 1. Overview & Core Concept
 
-- **What It Does**: Transforms the Clinical Referral Intake form into a 100% crisp, flat medical paper interface with zero depth illusions, zero inset/outset shadows, and zero focus glow rings.
-- **Target Audience**: Emergency physicians, referral nurses, and dispatchers at Champasak Provincial Hospital and district health centers who require a clean, glare-free, clinical form interface.
-- **Key Value**: Crisp high-contrast legibility without subtle shadows or browser-induced blurry bevels on vital and lab input fields.
+- **What It Does**:
+  1. **Admin Settings View**: Creates a dedicated `ຕັ້ງຄ່າ` (Settings) tab in the admin header alongside `ທຸກເຄສທົ່ວແຂວງ (All Referrals)`, featuring two subtabs:
+     - Subtab 1: `ຈັດການບັນຊີໂຮງໝໍເມືອງ / ສຸກສາລາ` (District Hospitals & Health Centers).
+     - Subtab 2: `ຕັ້ງຄ່າບົ່ງມະຕິ` (ICD-10 Diagnosis Management with CSV file uploader for 74,889 rows).
+  2. **CSV Import**: Fast chunked CSV parser reading Column A = `CODE` and Column B = `NAME OF DISEASE` into an IndexedDB store with real-time percentage progress bar.
+  3. **Clinical Diagnosis Search**: The `ການບົ່ງມະຕິພະຍາດຫຼັກ *` field in `ReferralForm.tsx` becomes an autocomplete combobox allowing typing either code (e.g. `S06`, `I21`) or disease letters (e.g. `trauma`, `infarction`, `pneumonia`), displaying live filtered results and populating as `[CODE] - [NAME OF DISEASE]`.
 
 ---
 
 ## 2. User Experience & Visual Design
 
-### Aesthetic Direction
-- **Flat Clinical Discipline**: Pure flat white input surfaces (`bg-white`), crisp 1px neutral borders (`border-slate-300`), and active state indicated solely by a solid border color change (`border-emerald-600`) with zero glow or blur.
+### Admin View Architecture
+- **Header Nav**:
+  - `ທຸກເຄສທົ່ວແຂວງ (All Referrals)` (Active referral list + triage dashboard)
+  - `ຕັ້ງຄ່າ (Settings)` (Opens settings workspace)
+- **Settings Subtabs**:
+  - `[ ໂຮງໝໍເມືອງ / ສຸກສາລາ ]` | `[ ຕັ້ງຄ່າບົ່ງມະຕິ (ICD-10) ]`
+- **ICD-10 Management Panel**:
+  - Drag-and-drop CSV upload zone with file picker button.
+  - Live upload progress indicator: `ກຳລັງບັນທຶກ: 45,000 / 74,889 ລະຫັດ (60%)`.
+  - Status card: Total imported codes counter (e.g., `74,889 ລະຫັດພະຍາດ`), last updated timestamp, and "Clear / Reset" button.
+  - Interactive search test sandbox: lets admin verify search queries immediately after upload.
 
-### Color & Spatial Tokens
-- **Input Canvas**: `#FFFFFF` (pure white, zero gradient, `background-image: none`).
-- **Input Border**: `#CBD5E1` (`slate-300`) resting, `#059669` (`emerald-600`) active focus.
-- **Shadow Enforcement**: `box-shadow: none !important; -webkit-box-shadow: none !important; -webkit-appearance: none !important;`.
-- **Containers**: Flat `border border-emerald-900/10` and `bg-emerald-50/30` with `shadow-none`.
-
----
-
-## 3. Key Product Decisions & Trade-Offs
-
-- **Decision 1: Global CSS Reset vs. Component-Only Classes**
-  - *Chosen Approach*: Apply both a global CSS rule in `src/index.css` targeting `input, textarea, select, button` AND explicit Tailwind utility classes (`shadow-none ring-0 focus:ring-0`) on every component input.
-  - *Why*: Browsers (especially Safari, WebKit, and Chromium mobile/desktop) often render default inset box-shadows (`-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1)`) on native text inputs that Tailwind utility classes alone do not completely neutralize without `appearance: none` and `box-shadow: none !important`.
-  - *Alternatives Considered*: Only editing Tailwind classes (which left the subtle browser shadow on WBC).
-
-- **Decision 2: Focus Indication Without Glow**
-  - *Chosen Approach*: Solid 1px or 1.5px high-contrast border transition (`focus:border-emerald-600`) without any multi-pixel spread ring.
-  - *Why*: Meets WCAG accessibility requirements for focus visibility while remaining 100% shadow-free.
+### Referral Form Diagnosis Field
+- **Combobox Input**:
+  - Flat border, zero shadow (`shadow-none border border-slate-300 focus:border-emerald-600`).
+  - Dropdown menu appears on focus/type showing top 50 matches with highlighted code tag (`font-mono font-bold text-emerald-800`) and disease name.
+  - Full keyboard navigation (Arrow Up/Down, Enter to select, Escape to close).
+  - Allows custom typing fallback if a clinician needs to add custom specifiers.
 
 ---
 
-## 4. Technical Architecture & Data Strategy
+## 3. Technical Architecture & Data Strategy
 
 ```
-┌───────────────────────────────────────────────────────────────┐
-│                       Global CSS Layer                        │
-│                     (src/index.css)                           │
-│  - input, textarea, select { box-shadow: none !important; }   │
-│  - appearance: none !important;                               │
-│  - focus { outline: none !important; box-shadow: none ! }     │
-└───────────────────────────────┬───────────────────────────────┘
-                                │ enforces flat rendering
-                                ▼
-┌───────────────────────────────────────────────────────────────┐
-│            Clinical Referral Intake Form Component            │
-│               (src/components/ReferralForm.tsx)               │
-│                                                               │
-│  Step 1: Patient Demographics & Transfer Routing (Flat)       │
-│  Step 2: Diagnosis, History & Vital Signs (Flat)              │
-│  Step 3: Laboratory Investigations (WBC, HCT, etc.) & Imaging │
-│          - Pure flat white boxes                              │
-│          - border border-slate-300 shadow-none                │
-│          - focus:border-emerald-600 focus:outline-none        │
-│  Step 4: Physical Examination & GCS (Flat)                    │
-│  Step 5: Treatment Given & Dispatch Authorization (Flat)      │
-└───────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                 Admin Settings View (App.tsx)               │
+│                                                             │
+│  Tab 1: ທຸກເຄສທົ່ວແຂວງ (All Referrals)                      │
+│  Tab 2: ຕັ້ງຄ່າ (Settings)                                  │
+│         ├── Subtab 1: ຈັດການບັນຊີໂຮງໝໍເມືອງ / ສຸກສາລາ       │
+│         └── Subtab 2: ຕັ້ງຄ່າບົ່ງມະຕິ (ICD-10 CSV Import)   │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│              IndexedDB Engine (icd10Service.ts)             │
+│                                                             │
+│  - Database: emscps_icd10_db                                │
+│  - Store: icd10_codes (keyPath: code)                       │
+│  - Index: code, name_lower                                  │
+│  - Chunked batch write (5,000 rows/transaction)             │
+│  - Prefix & substring search returning top 50 in <15ms      │
+└──────────────────────────────┬──────────────────────────────┘
+                               │ queries
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│             ReferralForm (Clinical Intake Step 2)           │
+│                                                             │
+│  - Searchable Combobox: provisionalDiagnosis                │
+│  - Searches by code ("I21") or name ("infarct")             │
+│  - Formats as: "I21.9 - Acute myocardial infarction"        │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### Proposed Changes
-
-1. **`src/index.css`**:
-   - Add global reset rules for all form elements:
-     ```css
-     input, textarea, select {
-       box-shadow: none !important;
-       -webkit-box-shadow: none !important;
-       -moz-box-shadow: none !important;
-       -webkit-appearance: none !important;
-       appearance: none !important;
-     }
-     input:focus, textarea:focus, select:focus {
-       box-shadow: none !important;
-       -webkit-box-shadow: none !important;
-       -moz-box-shadow: none !important;
-       outline: none !important;
-     }
-     ```
-2. **`src/components/ReferralForm.tsx`**:
-   - Audit and enforce `shadow-none` across all input fields (including WBC, HCT, HB, PLT, Glucose, Creatinine, Urea, K/Na, Dengue, Other Labs, CXR, Ultrasound, CT-Scan, Physical Exam fields, GCS, and Demographics).
-3. **Verification**:
-   - Compile and lint applet (`compile_applet` and `lint_applet`).
-   - Run production build `npm run build` to confirm zero issues.
+### Key Modules to Create / Modify
+1. **`src/services/icd10Service.ts`**:
+   - `initDb()`: Initializes IndexedDB schema.
+   - `importCsvText(csvText, onProgress)`: High-performance streaming parser and batch insert into IndexedDB.
+   - `searchCodes(query, limit = 50)`: Fast search matching either `code` prefix or words in `name_lower`.
+   - `getCount()`: Returns count of currently loaded codes.
+   - `clearCodes()`: Truncates store.
+2. **`src/components/AdminSettingsView.tsx`**:
+   - Container component with subtabs:
+     - Subtab 1: Hospital & Health Center Management (embeds full hospital CRUD).
+     - Subtab 2: Diagnosis & ICD-10 CSV Upload with live progress, stats, and search tester.
+3. **`src/components/Icd10Combobox.tsx`**:
+   - High-performance debounced autocomplete combobox component.
+   - Renders code and disease name cleanly.
+4. **`src/components/ReferralForm.tsx`**:
+   - Integrate `Icd10Combobox` into Step 2 for `provisionalDiagnosis`.
+5. **`src/components/Header.tsx` & `src/App.tsx`**:
+   - Add `ຕັ້ງຄ່າ` tab for admin in header and route to `AdminSettingsView`.

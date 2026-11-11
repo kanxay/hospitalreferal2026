@@ -1,4 +1,3 @@
-import React from 'react';
 import { 
   Database, 
   Plus, 
@@ -7,13 +6,14 @@ import {
   ShieldCheck, 
   HardDrive, 
   LogOut, 
-  Building2 
+  Building2,
+  Settings
 } from 'lucide-react';
 import { AuthSession, DatabaseStatus } from '../types/referral';
 
 interface HeaderProps {
-  currentTab: 'dashboard' | 'new-referral';
-  onSelectTab: (tab: 'dashboard' | 'new-referral') => void;
+  currentTab: 'dashboard' | 'new-referral' | 'settings';
+  onSelectTab: (tab: 'dashboard' | 'new-referral' | 'settings') => void;
   dbStatus: DatabaseStatus;
   onOpenDbSettings: () => void;
   onRefreshData: () => void;
@@ -74,7 +74,7 @@ export const Header: React.FC<HeaderProps> = ({
               {isAdmin ? 'ທຸກເຄສທົ່ວແຂວງ (All Referrals)' : 'ລາຍການສົ່ງຕໍ່ຂອງໂຮງໝໍ'}
             </button>
 
-            {/* User only: Show "+ ປ້ອນໃບສົ່ງຕໍ່ໃໝ່" nav link (Admin cannot create new cases) */}
+            {/* User only: Show "+ ປ້ອນໃບສົ່ງຕໍ່ໃໝ່" nav link */}
             {!isAdmin && (
               <button
                 onClick={() => onSelectTab('new-referral')}
@@ -88,14 +88,18 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
-            {/* Admin only: Hospital management */}
+            {/* Admin only: Tab ຕັ້ງຄ່າ (Settings) */}
             {isAdmin && (
               <button
-                onClick={onOpenHospitalManagement}
-                className="text-slate-600 hover:text-emerald-900 transition-colors whitespace-nowrap shrink-0 py-1.5 border-b-2 border-transparent flex items-center gap-1.5"
+                onClick={() => onSelectTab('settings')}
+                className={`transition-colors whitespace-nowrap shrink-0 py-1.5 border-b-2 flex items-center gap-1.5 ${
+                  currentTab === 'settings'
+                    ? 'border-emerald-700 text-emerald-950 font-bold'
+                    : 'border-transparent text-slate-600 hover:text-emerald-900'
+                }`}
               >
-                <Building2 className="w-3.5 h-3.5 text-emerald-700" />
-                <span>ຈັດການ 10 ໂຮງໝໍເມືອງ</span>
+                <Settings className="w-3.5 h-3.5 text-emerald-700" />
+                <span>ຕັ້ງຄ່າ (Settings)</span>
               </button>
             )}
           </nav>

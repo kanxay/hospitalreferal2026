@@ -656,7 +656,6 @@ export const ReferralDetail: React.FC<ReferralDetailProps> = ({
                   type="text"
                   value={transitNote}
                   onChange={(e) => setTransitNote(e.target.value)}
-                  placeholder="ຕົວຢ່າງ: ຄົນເຈັບເລີ່ມຮູ້ສຶກຕົວ, ມ່ານຕາຕອບສະໜອງດີ..."
                   className="w-full p-2 border rounded-lg"
                 />
               </div>

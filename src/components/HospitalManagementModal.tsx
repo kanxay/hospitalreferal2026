@@ -222,7 +222,6 @@ export const HospitalManagementModal: React.FC<HospitalManagementModalProps> = (
                         setDistrict(dists[0]);
                       }
                     }}
-                    placeholder="ເລືອກ ຫຼື ພິມຊື່ແຂວງ..."
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-emerald-600"
                   />
                   <datalist id="modal-provinces-list">
@@ -243,7 +242,6 @@ export const HospitalManagementModal: React.FC<HospitalManagementModalProps> = (
                     list="modal-districts-list"
                     value={district}
                     onChange={(e) => setDistrict(e.target.value)}
-                    placeholder="ເລືອກ ຫຼື ພິມຊື່ເມືອງ..."
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-emerald-600"
                   />
                   <datalist id="modal-districts-list">
@@ -263,7 +261,6 @@ export const HospitalManagementModal: React.FC<HospitalManagementModalProps> = (
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="ຕົວຢ່າງ: ໂຮງໝໍຊຸມຊົນເມືອງປາກຊ່ອງ"
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white"
                   />
                 </div>
@@ -278,7 +275,6 @@ export const HospitalManagementModal: React.FC<HospitalManagementModalProps> = (
                     required
                     value={passcode}
                     onChange={(e) => setPasscode(e.target.value)}
-                    placeholder="paksong2026"
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white font-mono font-bold text-emerald-900"
                   />
                 </div>
@@ -292,7 +288,6 @@ export const HospitalManagementModal: React.FC<HospitalManagementModalProps> = (
                     type="text"
                     value={directorName}
                     onChange={(e) => setDirectorName(e.target.value)}
-                    placeholder="ຕົວຢ່າງ: ດຣ. ບຸນມີ ໄຊຍະວົງ"
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white"
                   />
                 </div>
@@ -306,7 +301,6 @@ export const HospitalManagementModal: React.FC<HospitalManagementModalProps> = (
                     type="text"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="031 920 114"
                     className="w-full p-2 border border-slate-300 rounded-lg bg-white font-mono"
                   />
                 </div>
@@ -329,7 +323,6 @@ export const HospitalManagementModal: React.FC<HospitalManagementModalProps> = (
                         type="text"
                         value={ambulancePlate1}
                         onChange={(e) => setAmbulancePlate1(e.target.value)}
-                        placeholder="ກກ 1122 ຈຳປາສັກ"
                         className="w-full p-2 border border-slate-300 rounded-lg bg-white font-mono"
                       />
                     </div>
@@ -342,7 +335,6 @@ export const HospitalManagementModal: React.FC<HospitalManagementModalProps> = (
                         type="text"
                         value={ambulancePlate2}
                         onChange={(e) => setAmbulancePlate2(e.target.value)}
-                        placeholder="ກຂ 3344 ຈຳປາສັກ"
                         className="w-full p-2 border border-slate-300 rounded-lg bg-white font-mono"
                       />
                     </div>
