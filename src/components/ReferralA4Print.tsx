@@ -189,14 +189,36 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
   const provinceDisplay = provinceName.startsWith('ແຂວງ') ? provinceName : `ແຂວງ${provinceName}`;
   const cleanDistrict = stripEnglishTag(referral.district);
 
-  // Triage badge color
-  const triageColorClass = {
-    resuscitation: 'text-rose-700 bg-rose-50 border-rose-300',
-    emergency: 'text-red-700 bg-red-50 border-red-300',
-    urgent: 'text-amber-700 bg-amber-50 border-amber-300',
-    'semi-urgent': 'text-emerald-700 bg-emerald-50 border-emerald-300',
-    'non-urgent': 'text-slate-700 bg-slate-50 border-slate-300',
-  }[referral.triageLevel.toLowerCase()] || 'text-red-700 bg-red-50 border-red-300';
+  // Lao Triage Display mapping:
+  // emergency -> ສຸກເສີນວິກິດ (ສີແດງ)
+  // urgent -> ຮີບດ່ວນ (ສີເຫຼືອງ)
+  // routine -> ທົ່ວໄປ (ສີຂຽວ)
+  const getTriageDisplay = (level?: string) => {
+    const l = (level || '').toLowerCase();
+    switch (l) {
+      case 'emergency':
+      case 'resuscitation':
+        return {
+          label: 'ສຸກເສີນວິກິດ (ສີແດງ)',
+          colorClass: 'text-red-700 bg-red-50 border border-red-300',
+        };
+      case 'urgent':
+        return {
+          label: 'ຮີບດ່ວນ (ສີເຫຼືອງ)',
+          colorClass: 'text-amber-800 bg-amber-50 border border-amber-300',
+        };
+      case 'routine':
+      case 'semi-urgent':
+      case 'non-urgent':
+      default:
+        return {
+          label: 'ທົ່ວໄປ (ສີຂຽວ)',
+          colorClass: 'text-emerald-800 bg-emerald-50 border border-emerald-300',
+        };
+    }
+  };
+
+  const triageInfo = getTriageDisplay(referral.triageLevel);
 
   return (
     <div className="space-y-4 max-w-4xl mx-auto pb-16 print:pb-0 print:space-y-0 font-sans">
@@ -305,8 +327,8 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
               <p className="text-slate-800 text-[13px]">
                 <span>ໂທ: {referral.originPhone || '031 920 114'} </span>
                 <span className="font-bold text-slate-900 ml-1">Triage: </span>
-                <span className={`font-bold uppercase px-1.5 py-0.5 rounded text-[12px] ${triageColorClass}`}>
-                  {referral.triageLevel.toUpperCase()}
+                <span className={`font-bold px-1.5 py-0.5 rounded text-[12px] inline-block ${triageInfo.colorClass}`}>
+                  {triageInfo.label}
                 </span>
               </p>
             </div>

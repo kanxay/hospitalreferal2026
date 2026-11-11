@@ -84,18 +84,18 @@ export const ReferralList: React.FC<ReferralListProps> = ({
     switch (level) {
       case 'emergency':
         return {
-          label: 'ສຸກເສີນວິກິດ (Red)',
+          label: 'ສຸກເສີນວິກິດ (ສີແດງ)',
           textColor: 'text-rose-700 font-bold',
         };
       case 'urgent':
         return {
-          label: 'ຮີບດ່ວນ (Yellow)',
+          label: 'ຮີບດ່ວນ (ສີເຫຼືອງ)',
           textColor: 'text-amber-700 font-bold',
         };
       case 'routine':
       default:
         return {
-          label: 'ທົ່ວໄປ (Green)',
+          label: 'ທົ່ວໄປ (ສີຂຽວ)',
           textColor: 'text-emerald-700 font-bold',
         };
     }

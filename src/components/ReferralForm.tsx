@@ -404,7 +404,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 >
                   <div className="flex items-center gap-1.5 font-bold text-rose-900 text-xs">
                     <span className="w-2.5 h-2.5 rounded-full bg-rose-600" />
-                    <span>ສຸກເສີນວິກິດ (Red Level 1)</span>
+                    <span>ສຸກເສີນວິກິດ (ສີແດງ Level 1)</span>
                   </div>
                   <p className="text-[11px] text-rose-700 mt-0.5">ຄຸກຄາມຊີວິດ ຕ້ອງການການກູ້ຊີບດ່ວນທັນທີ</p>
                 </button>
@@ -420,7 +420,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 >
                   <div className="flex items-center gap-1.5 font-bold text-amber-900 text-xs">
                     <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-                    <span>ຮີບດ່ວນ (Yellow Level 2)</span>
+                    <span>ຮີບດ່ວນ (ສີເຫຼືອງ Level 2)</span>
                   </div>
                   <p className="text-[11px] text-amber-700 mt-0.5">ອາການຮຸນແຮງ ຕ້ອງປິ່ນປົວພາຍໃນ 30-60 ນາທີ</p>
                 </button>
@@ -436,7 +436,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 >
                   <div className="flex items-center gap-1.5 font-bold text-emerald-900 text-xs">
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                    <span>ທົ່ວໄປ (Green Level 3)</span>
+                    <span>ທົ່ວໄປ (ສີຂຽວ Level 3)</span>
                   </div>
                   <p className="text-[11px] text-emerald-700 mt-0.5">ອາການຄົງທີ່ ສົ່ງຕໍ່ເພື່ອກວດວິເຄາະພິເສດ</p>
                 </button>

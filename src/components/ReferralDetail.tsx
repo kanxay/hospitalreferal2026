@@ -134,8 +134,8 @@ export const ReferralDetail: React.FC<ReferralDetailProps> = ({
                 referral.triageLevel === 'emergency' ? 'bg-rose-100 text-rose-800' :
                 referral.triageLevel === 'urgent' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'
               }`}>
-                {referral.triageLevel === 'emergency' ? 'ສຸກເສີນວິກິດ (Red)' :
-                 referral.triageLevel === 'urgent' ? 'ຮີບດ່ວນ (Yellow)' : 'ທົ່ວໄປ (Green)'}
+                {referral.triageLevel === 'emergency' ? 'ສຸກເສີນວິກິດ (ສີແດງ)' :
+                 referral.triageLevel === 'urgent' ? 'ຮີບດ່ວນ (ສີເຫຼືອງ)' : 'ທົ່ວໄປ (ສີຂຽວ)'}
               </span>
               {referral.insuranceType && (
                 <>
