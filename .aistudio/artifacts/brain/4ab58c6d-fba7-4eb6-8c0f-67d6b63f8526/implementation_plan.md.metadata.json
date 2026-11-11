@@ -1,6 +1,6 @@
 {
-  "summary":  "Implementation plan to fix A4 print and PDF isolation, completely hiding desktop header, navigation, and background, and rendering only the medical referral slip container within compact 8mm to 10mm A4 margins.",
-  "updatedAt":  "2026-11-11T11:36:22.181449575Z",
+  "summary":  "Implementation plan to expand Referral A4 Print layout: increase body font size to 13px with relaxed row spacing and expand the signature box at the bottom to fill the A4 height cleanly.",
+  "updatedAt":  "2026-11-11T12:10:02.497222102Z",
   "requestFeedback":  true,
   "userFacing":  true
 }
