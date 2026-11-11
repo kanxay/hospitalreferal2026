@@ -248,7 +248,7 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
       {/* Official Printable A4 Document Container */}
       <div className="bg-slate-100 p-2 sm:p-5 flex justify-center rounded-2xl overflow-x-auto">
         <div
-          className="a4-page bg-white text-slate-900 shadow-lg border border-slate-300 p-6 sm:p-8 w-full max-w-[210mm] text-[11px] leading-snug font-sans"
+          className="a4-page print-container bg-white text-slate-900 shadow-lg border border-slate-300 p-6 sm:p-8 w-full max-w-[210mm] text-[11px] leading-snug font-sans"
         >
           
           {/* Official Lao National Header (Centred Lao Logo & Motto) */}

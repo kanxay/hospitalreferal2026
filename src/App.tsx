@@ -214,32 +214,34 @@ export default function App() {
       
       {/* Toast alert */}
       {toast && (
-        <div className="fixed bottom-5 right-5 z-50 bg-emerald-950 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-xs font-semibold animate-fade-in border border-emerald-800">
+        <div className="no-print fixed bottom-5 right-5 z-50 bg-emerald-950 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-xs font-semibold animate-fade-in border border-emerald-800">
           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toast.message}</span>
         </div>
       )}
 
       {/* Top Bar Header */}
-      <Header
-        currentTab={currentView === 'new-referral' ? 'new-referral' : currentView === 'settings' ? 'settings' : 'dashboard'}
-        onSelectTab={(tab) => {
-          setCurrentView(tab);
-        }}
-        dbStatus={dbStatus}
-        onOpenDbSettings={() => setIsDbModalOpen(true)}
-        onRefreshData={handleRefresh}
-        isRefreshing={isRefreshing}
-        currentUser={currentUser}
-        onLogout={handleLogout}
-        onOpenHospitalManagement={() => {
-          if (currentUser.role === 'admin') {
-            setCurrentView('settings');
-          } else {
-            setIsHospitalModalOpen(true);
-          }
-        }}
-      />
+      <div className="no-print">
+        <Header
+          currentTab={currentView === 'new-referral' ? 'new-referral' : currentView === 'settings' ? 'settings' : 'dashboard'}
+          onSelectTab={(tab) => {
+            setCurrentView(tab);
+          }}
+          dbStatus={dbStatus}
+          onOpenDbSettings={() => setIsDbModalOpen(true)}
+          onRefreshData={handleRefresh}
+          isRefreshing={isRefreshing}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+          onOpenHospitalManagement={() => {
+            if (currentUser.role === 'admin') {
+              setCurrentView('settings');
+            } else {
+              setIsHospitalModalOpen(true);
+            }
+          }}
+        />
+      </div>
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">

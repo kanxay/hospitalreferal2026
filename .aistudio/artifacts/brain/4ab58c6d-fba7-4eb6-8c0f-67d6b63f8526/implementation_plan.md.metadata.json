@@ -1,6 +1,6 @@
 {
-  "summary":  "Implementation plan to integrate the official Lao National Emblem supporting both public/assets/lao-emblem.png and a Logo Uploader in Admin Settings with browser persistence and fallback handling.",
-  "updatedAt":  "2026-11-11T11:19:25.691135936Z",
+  "summary":  "Implementation plan to fix A4 print and PDF isolation, completely hiding desktop header, navigation, and background, and rendering only the medical referral slip container within compact 8mm to 10mm A4 margins.",
+  "updatedAt":  "2026-11-11T11:36:22.181449575Z",
   "requestFeedback":  true,
   "userFacing":  true
 }
