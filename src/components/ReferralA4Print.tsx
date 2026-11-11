@@ -248,12 +248,12 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
       {/* Official Printable A4 Document Container */}
       <div className="bg-slate-100 p-2 sm:p-5 flex justify-center rounded-2xl overflow-x-auto">
         <div
-          className="a4-page print-container bg-white text-slate-900 shadow-lg border border-slate-300 p-6 sm:p-8 w-full max-w-[210mm] text-[11px] leading-snug font-sans"
+          className="a4-page print-container bg-white text-slate-900 shadow-lg border border-slate-300 p-6 sm:p-8 w-full max-w-[210mm] text-[12px] leading-snug font-sans"
         >
           
           {/* Official Lao National Header (Centred Lao Logo & Motto) */}
-          <div className="text-center space-y-1 mb-2">
-            <div className="flex justify-center">
+          <div className="text-center space-y-0.5 mb-2">
+            <div className="flex justify-center mb-1">
               {!imageLoadError ? (
                 <img
                   src={emblemSrc}
@@ -271,60 +271,60 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
                 <LaoNationalEmblem className="w-13 h-13 sm:w-14 sm:h-14 drop-shadow-xs" />
               )}
             </div>
-            <h2 className="font-bold text-xs sm:text-sm tracking-wide text-slate-900">
+            <h2 className="font-bold text-[12px] tracking-wide text-slate-900">
               ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນລາວ
             </h2>
-            <p className="text-[10.5px] font-semibold text-slate-700">
+            <p className="text-[12px] font-semibold text-slate-700">
               ສັນຕິພາບ ເອກະລາດ ປະຊາທິປະໄຕ ເອກະພາບ ວັດທະນະຖາວອນ
             </p>
-            <p className="text-[10px] font-mono tracking-widest text-slate-600">
+            <p className="text-[12px] font-mono tracking-widest text-slate-600">
               ***==***
             </p>
           </div>
 
           {/* Sub-Header: Left (ພະແນກ, ໂຮງໝໍ) vs Right (REF, HN, ໂທ, Triage) */}
           {/* Note: Divider line removed as explicitly requested ("ຕັດຂີດເສັ້ນອອກ") */}
-          <div className="flex justify-between items-start text-[11px] pb-2 text-left">
+          <div className="flex justify-between items-start text-[12px] pb-1.5 text-left">
             <div className="space-y-0.5">
-              <p className="font-semibold text-slate-800">
+              <p className="font-semibold text-slate-800 text-[12px]">
                 ພະແນກສາທາລະນະສຸກ: {provinceDisplay}
               </p>
-              <p className="font-bold text-emerald-950 text-xs">
+              <p className="font-bold text-emerald-950 text-[12px]">
                 ໂຮງໝໍເມືອງ: {referral.originHospital}
               </p>
             </div>
             
-            <div className="text-right space-y-0.5">
-              <p className="font-mono font-bold text-slate-900 text-xs">
+            <div className="text-right space-y-0.5 text-[12px]">
+              <p className="font-mono font-bold text-slate-900 text-[12px]">
                 {referral.id} - HN: {referral.idCardOrHN}
               </p>
-              <p className="text-slate-800">
+              <p className="text-slate-800 text-[12px]">
                 <span>ໂທ: {referral.originPhone || '031 920 114'} </span>
                 <span className="font-bold text-slate-900 ml-1">Triage: </span>
-                <span className={`font-bold uppercase px-1 py-0.2 rounded text-[10px] ${triageColorClass}`}>
+                <span className={`font-bold uppercase px-1 py-0.2 rounded text-[12px] ${triageColorClass}`}>
                   {referral.triageLevel.toUpperCase()}
                 </span>
               </p>
             </div>
           </div>
 
-          {/* Slip Title: ໃບສົ່ງຕໍ່ຄົນເຈັບ */}
+          {/* Slip Title: ໃບສົ່ງຕໍ່ຄົນເຈັບ (ຂະໜາດ 16 ຕາມທີ່ກຳນົດ) */}
           <div className="text-center my-2 pb-1 border-b border-slate-300">
-            <h1 className="text-sm font-bold uppercase tracking-wider text-slate-900">
+            <h1 className="text-[16px] font-bold uppercase tracking-wider text-slate-900">
               ໃບສົ່ງຕໍ່ຄົນເຈັບ
             </h1>
-            <p className="text-[10px] font-medium text-slate-500">
+            <p className="text-[12px] font-medium text-slate-500">
               ລະບົບສົ່ງຕໍ່ສຸກເສີນ EMSCPS · ໂຮງໝໍແຂວງຈຳປາສັກ | ວັນທີ: {referral.admissionDate || referral.createdAt.split('T')[0]} {referral.transferTime ? `(${referral.transferTime})` : ''}
             </p>
           </div>
 
           {/* Section 1: Patient Information */}
           <div className="mb-2">
-            <div className="bg-slate-100 px-2 py-0.5 font-bold text-[10.5px] uppercase tracking-wide border border-slate-300 mb-1">
+            <div className="bg-slate-100 px-2 py-0.5 font-bold text-[12px] uppercase tracking-wide border border-slate-300 mb-1">
               I. ຂໍ້ມູນປະຈຳຕົວຄົນເຈັບ
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-3 gap-y-1 text-[11px] px-1">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-3 gap-y-1 text-[12px] px-1">
               <div className="sm:col-span-2">
                 <span className="font-bold text-slate-800">ຊື່ ແລະ ນາມສະກຸນ: </span>
                 <span className="font-bold text-slate-950">{referral.patientName}</span>
@@ -365,20 +365,20 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
 
           {/* Section 2: Clinical Summary & Diagnosis (Inline Diagnosis: "II. ຂໍ້ມູນອາການ ແລະ ການບົ່ງມະຕິ: ຕໍ່ເລີຍ...") */}
           <div className="mb-2">
-            <div className="bg-slate-100 px-2 py-0.5 font-bold text-[10.5px] uppercase tracking-wide border border-slate-300 mb-1">
+            <div className="bg-slate-100 px-2 py-0.5 font-bold text-[12px] uppercase tracking-wide border border-slate-300 mb-1">
               <span>II. ຂໍ້ມູນອາການ ແລະ ການບົ່ງມະຕິ: </span>
-              <span className="text-emerald-950 font-black normal-case text-xs ml-1">
+              <span className="text-emerald-950 font-black normal-case text-[12px] ml-1">
                 {referral.provisionalDiagnosis}
               </span>
             </div>
 
-            <div className="space-y-1 text-[11px] px-1">
+            <div className="space-y-1 text-[12px] px-1">
               <div>
                 <span className="font-bold text-slate-800">ອາການປະຈຸບັນ & ອາການຕົ້ນຕໍ: </span>
                 <span className="text-slate-900">{referral.presentIllness || referral.chiefComplaint}</span>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 text-[10.5px]">
+              <div className="grid grid-cols-2 gap-2 text-[12px]">
                 <div>
                   <span className="font-bold text-slate-800">ປະຫວັດເຈັບເປັນຜ່ານມາ: </span>
                   <span className="text-slate-700">{referral.pastMedicalHistory || 'ບໍ່ມີ'}</span>
@@ -393,12 +393,12 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
 
           {/* Section 3: Vitals & Glasgow Coma Scale (GCS) */}
           <div className="mb-2">
-            <div className="bg-slate-100 px-2 py-0.5 font-bold text-[10.5px] uppercase tracking-wide border border-slate-300 flex justify-between items-center mb-1">
+            <div className="bg-slate-100 px-2 py-0.5 font-bold text-[12px] uppercase tracking-wide border border-slate-300 flex justify-between items-center mb-1">
               <span>III. ສັນຍານຊີບ & ລະດັບສະຕິ GCS</span>
-              <span className="font-mono text-[10px] text-slate-600">Unit: {referral.physicalExam?.referringUnit || 'ER'}</span>
+              <span className="font-mono text-[12px] text-slate-600">Unit: {referral.physicalExam?.referringUnit || 'ER'}</span>
             </div>
 
-            <table className="w-full text-center border-collapse border border-slate-300 text-[10.5px] font-mono tabular-nums">
+            <table className="w-full text-center border-collapse border border-slate-300 text-[12px] font-mono tabular-nums">
               <thead>
                 <tr className="bg-slate-50 font-bold border-b border-slate-300">
                   <th className="border border-slate-300 py-0.5 px-1">BP (mmHg)</th>
@@ -412,25 +412,25 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
               </thead>
               <tbody>
                 <tr>
-                  <td className="border border-slate-300 py-1 px-1 font-bold">
+                  <td className="border border-slate-300 py-0.5 px-1 font-bold">
                     {referral.vitalSigns.bpSystolic}/{referral.vitalSigns.bpDiastolic}
                   </td>
-                  <td className="border border-slate-300 py-1 px-1">
+                  <td className="border border-slate-300 py-0.5 px-1">
                     {referral.vitalSigns.pulseRate}
                   </td>
-                  <td className="border border-slate-300 py-1 px-1">
+                  <td className="border border-slate-300 py-0.5 px-1">
                     {referral.vitalSigns.respiratoryRate}
                   </td>
-                  <td className="border border-slate-300 py-1 px-1">
+                  <td className="border border-slate-300 py-0.5 px-1">
                     {referral.vitalSigns.temperature}°
                   </td>
-                  <td className="border border-slate-300 py-1 px-1 font-bold">
+                  <td className="border border-slate-300 py-0.5 px-1 font-bold">
                     {referral.vitalSigns.spO2}%
                   </td>
-                  <td className="border border-slate-300 py-1 px-1 font-black bg-emerald-50 text-emerald-950">
+                  <td className="border border-slate-300 py-0.5 px-1 font-black bg-emerald-50 text-emerald-950">
                     {gcs.total}/15 ({gcs.severity})
                   </td>
-                  <td className="border border-slate-300 py-1 px-1 text-[10px]">
+                  <td className="border border-slate-300 py-0.5 px-1 text-[12px]">
                     E{gcs.eye} V{gcs.verbal} M{gcs.motor}
                   </td>
                 </tr>
@@ -438,7 +438,7 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
             </table>
 
             {/* Physical Exam Summary (Spurious Oxygen Device line removed as requested) */}
-            <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[10.5px] pt-1 px-1 text-slate-800">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[12px] pt-1 px-1 text-slate-800">
               <p><span className="font-bold">Motor Weakness:</span> {referral.physicalExam?.motorWeakness || 'ປົກກະຕິ'}</p>
               <p><span className="font-bold">Pupils:</span> L: {referral.physicalExam?.pupilLeft || '3mm RTL'} | R: {referral.physicalExam?.pupilRight || '3mm RTL'}</p>
               <p><span className="font-bold">Lung:</span> {referral.physicalExam?.lungExam || 'Clear'}</p>
@@ -448,13 +448,13 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
 
           {/* Section 4: Laboratory & Imaging */}
           <div className="mb-2">
-            <div className="bg-slate-100 px-2 py-0.5 font-bold text-[10.5px] uppercase tracking-wide border border-slate-300 mb-1">
+            <div className="bg-slate-100 px-2 py-0.5 font-bold text-[12px] uppercase tracking-wide border border-slate-300 mb-1">
               IV. ຜົນກວດ LABS & IMAGING
             </div>
 
-            <table className="w-full text-center border-collapse border border-slate-300 text-[10.5px] font-mono tabular-nums">
+            <table className="w-full text-center border-collapse border border-slate-300 text-[12px] font-mono tabular-nums">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-300 text-[10px]">
+                <tr className="bg-slate-50 border-b border-slate-300 text-[12px]">
                   <th className="border border-slate-300 py-0.5 px-1">WBC</th>
                   <th className="border border-slate-300 py-0.5 px-1">HCT/HB</th>
                   <th className="border border-slate-300 py-0.5 px-1">PLT</th>
@@ -478,7 +478,7 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
             </table>
 
             {(referral.imaging?.cxr || referral.imaging?.ultrasound || referral.imaging?.ctScan) && (
-              <div className="text-[10px] pt-1 px-1 flex flex-wrap gap-x-4 gap-y-0.5 text-slate-800">
+              <div className="text-[12px] pt-1 px-1 flex flex-wrap gap-x-4 gap-y-0.5 text-slate-800">
                 {referral.imaging?.cxr && <p><span className="font-bold">CXR: </span>{referral.imaging.cxr}</p>}
                 {referral.imaging?.ultrasound && <p><span className="font-bold">Ultrasound: </span>{referral.imaging.ultrasound}</p>}
                 {referral.imaging?.ctScan && <p><span className="font-bold">CT-Scan: </span>{referral.imaging.ctScan}</p>}
@@ -487,12 +487,12 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
           </div>
 
           {/* Section 5: Treatments & Reason (Inline initial treatment continuation) */}
-          <div className="mb-3">
-            <div className="bg-slate-100 px-2 py-0.5 font-bold text-[10.5px] uppercase tracking-wide border border-slate-300 mb-1">
+          <div className="mb-2">
+            <div className="bg-slate-100 px-2 py-0.5 font-bold text-[12px] uppercase tracking-wide border border-slate-300 mb-1">
               V. ການປິ່ນປົວເບື້ອງຕົ້ນ & ເສັ້ນທາງສົ່ງຕໍ່
             </div>
 
-            <div className="space-y-1 text-[11px] px-1">
+            <div className="space-y-1 text-[12px] px-1">
               {/* Initial treatment inline continuation: "ການປິ່ນປົວເບື້ອງຕົ້ນທີ່ໄດ້ໃຫ້ໄປແລ້ວ: ຕໍ່ເລີຍ..." */}
               <div>
                 <span className="font-bold text-slate-900">ການປິ່ນປົວເບື້ອງຕົ້ນທີ່ໄດ້ໃຫ້ໄປແລ້ວ: </span>
@@ -501,7 +501,7 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-200 text-[10.5px]">
+              <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-200 text-[12px]">
                 <div>
                   <p><span className="font-bold text-slate-800">ເຫດຜົນໃນການສົ່ງຕໍ່: </span>{referral.transferReason}</p>
                   <p>
@@ -524,28 +524,28 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
               Left: ຜູ້ອຳນວຍການ (ໂຮງໝໍ... ຕັດອອກ, ບໍ່ຕ້ອງມີຊື່ ແລະ ບໍ່ຕ້ອງມີຂີດກ້ອງ ຈົ່ງວ່າງໄວ້ເພື່ອລາຍເຊັນ)
               Right: ທ່ານຫມໍສົ່ງຄົນເຈັບ (ໂຮງໝໍ... ຕັດອອກ, ບໍ່ຕ້ອງມີຊື່ ແລະ ບໍ່ຕ້ອງມີຂີດກ້ອງ ຈົ່ງວ່າງໄວ້ເພື່ອລາຍເຊັນ)
           */}
-          <div className="grid grid-cols-2 gap-8 pt-4 border-t border-slate-300 text-xs text-center">
+          <div className="grid grid-cols-2 gap-8 pt-3 border-t border-slate-300 text-[12px] text-center">
             {/* Left Column: ຜູ້ອຳນວຍການ */}
             <div>
-              <p className="font-bold text-slate-900">ຜູ້ອຳນວຍການ</p>
+              <p className="font-bold text-slate-900 text-[12px]">ຜູ້ອຳນວຍການ</p>
               {/* Blank space for manual signature / stamp without hospital name or underline */}
-              <div className="h-16 flex items-center justify-center">
-                <span className="text-[10px] text-slate-300 print:hidden select-none">(ບ່ອນເຊັນ ແລະ ປະທັບກາ)</span>
+              <div className="h-14 flex items-center justify-center">
+                <span className="text-[12px] text-slate-300 print:hidden select-none">(ບ່ອນເຊັນ ແລະ ປະທັບກາ)</span>
               </div>
             </div>
 
             {/* Right Column: ທ່ານຫມໍສົ່ງຄົນເຈັບ */}
             <div>
-              <p className="font-bold text-slate-900">ທ່ານຫມໍສົ່ງຄົນເຈັບ</p>
+              <p className="font-bold text-slate-900 text-[12px]">ທ່ານຫມໍສົ່ງຄົນເຈັບ</p>
               {/* Blank space for manual signature without hospital name or underline */}
-              <div className="h-16 flex items-center justify-center">
-                <span className="text-[10px] text-slate-300 print:hidden select-none">(ບ່ອນລາຍເຊັນ)</span>
+              <div className="h-14 flex items-center justify-center">
+                <span className="text-[12px] text-slate-300 print:hidden select-none">(ບ່ອນລາຍເຊັນ)</span>
               </div>
             </div>
           </div>
 
           {/* Compact Footer note */}
-          <div className="mt-2 pt-1 border-t border-slate-200 text-[8.5px] text-slate-400 text-center font-mono">
+          <div className="mt-1 pt-1 border-t border-slate-200 text-[12px] text-slate-400 text-center font-mono">
             EMSCPS Champasak Provincial Hospital EMS Referral Network · Generated electronically
           </div>
 
