@@ -195,7 +195,7 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
   }[referral.triageLevel.toLowerCase()] || 'text-red-700 bg-red-50 border-red-300';
 
   return (
-    <div className="space-y-4 max-w-4xl mx-auto pb-16 font-sans">
+    <div className="space-y-4 max-w-4xl mx-auto pb-16 print:pb-0 print:space-y-0 font-sans">
       
       {/* Control bar (Hidden during print) */}
       <div className="no-print bg-white p-3.5 rounded-2xl border border-slate-200 flex flex-wrap items-center justify-between gap-3 shadow-xs">
@@ -246,9 +246,9 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
       )}
 
       {/* Official Printable A4 Document Container */}
-      <div className="bg-slate-100 p-2 sm:p-5 flex justify-center rounded-2xl overflow-x-auto">
+      <div className="bg-slate-100 p-2 sm:p-5 print:p-0 print:bg-white flex justify-center rounded-2xl overflow-x-auto print:overflow-visible">
         <div
-          className="a4-page print-container bg-white text-slate-900 shadow-lg border border-slate-300 p-6 sm:p-8 w-full max-w-[210mm] text-[13px] leading-normal font-sans"
+          className="a4-page print-container bg-white text-slate-900 shadow-lg border border-slate-300 p-6 sm:p-8 print:p-0 print:border-none print:shadow-none w-full max-w-[210mm] text-[13px] leading-normal font-sans"
         >
           
           {/* Official Lao National Header (Centred Lao Logo & Motto) */}
@@ -526,14 +526,14 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
             <div>
               <p className="font-bold text-slate-900 text-[13px]">ຜູ້ອຳນວຍການ</p>
               {/* Clean blank space for manual signature & official seal */}
-              <div className="min-h-[120px] sm:min-h-[135px]" />
+              <div className="min-h-[85px] sm:min-h-[95px]" />
             </div>
 
             {/* Right Column: ທ່ານຫມໍສົ່ງຄົນເຈັບ */}
             <div>
               <p className="font-bold text-slate-900 text-[13px]">ທ່ານຫມໍສົ່ງຄົນເຈັບ</p>
               {/* Clean blank space for manual signature */}
-              <div className="min-h-[120px] sm:min-h-[135px]" />
+              <div className="min-h-[85px] sm:min-h-[95px]" />
             </div>
           </div>
 
