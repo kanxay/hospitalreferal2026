@@ -1,102 +1,99 @@
-# Form Refinement: 4 Southern Provinces Comboboxes, Flat Field Styling, Imaging & Physical Exam Dropdowns
+# Complete Elimination of Shadows on Clinical Referral Intake Form
 
-Upgrade the hospital management and clinical referral intake views with editable dropdown text inputs (comboboxes), expand regional coverage to all 4 southern provinces of Laos, remove all field drop shadows for a crisp flat medical aesthetic, and provide structured clinical presets for imaging and physical examinations.
+Eradicate all box-shadows, inner shadows, and focus glow halos across all input fields, textareas, selects, and containers in the Clinical Referral Intake form (specifically resolving the shadow observed on the WBC 12,500 input and all lab/clinical fields) using strict global CSS rules and explicit flat border styling.
 
 ## User Review & Critical Decisions
 
 > [!IMPORTANT]
-> All requested changes enhance data entry speed for medical personnel while retaining full typing flexibility (native combobox `<input list="...">` pattern).
+> The user confirmed that shadows were visible inside and around the input box itself (such as the WBC input) and selected the approach to **apply strict global CSS to remove all box-shadows**.
 
-- **Confirmed Decision 1**: Filter district options dynamically based on the selected province (Champasak, Salavan, Attapeu, Sekong), while still allowing medical staff to type any custom district or health center name.
-- **Confirmed Decision 2**: English imaging dropdown includes `None` (ບໍ່ໄດ້ເຮັດ), `Normal` (ປົກກະຕິ), plus 5 core emergency/trauma conditions (`Intracranial Hemorrhage / Acute TBI`, `Pneumonia / Lung Consolidation`, `Pleural Effusion / Hemothorax`, `Pneumothorax`, `Intra-abdominal Free Fluid / Hemoperitoneum`).
-- **Confirmed Decision 3**: Complete shadow removal across all form inputs, textareas, and select controls in the Clinical Referral Intake form to eliminate visual noise and deliver a clean, high-contrast, flat medical UI.
-- **Confirmed Decision 4**: Physical examination sections (Motor weakness, Pupils, Lung, Heart, Abdomen, and Other findings) will provide quick-select dropdown lists alongside custom typing.
+- **Confirmed Decision 1**: Shadows are present on/around input boxes (including browser default inner shadows and WebKit appearances).
+- **Confirmed Decision 2**: Implement an uncompromising global CSS rule removing `box-shadow`, `-webkit-box-shadow`, `-moz-box-shadow`, and `outline` across all form elements, backed by Tailwind `shadow-none` and `focus:ring-0`.
 
 ---
 
 ## 1. Overview & Core Concept
 
-### What It Delivers
-1. **4 Southern Provinces Geographic Coverage**:
-   - **ຈຳປາສັກ (Champasak)**: 10 districts (Pakse, Sanasomboun, Bachiang, Paksong, Pathoumphone, Phonthong, Champasak, Soukhouma, Moonlapamok, Khong).
-   - **ສາລະວັນ (Salavan)**: 8 districts (Salavan, Ta-Oy, Toumlane, Lakhonepheng, Vapy, Khongsedone, Lao Ngam, Samuoi).
-   - **ອັດຕະປື (Attapeu)**: 5 districts (Samakkhixay, Xaysettha, Sanxay, Phouvong, Sanamxay).
-   - **ເຊກອງ (Sekong)**: 4 districts (Lamam, Kaleum, Dakcheung, Thateng).
-2. **Dual Mode Combobox Inputs (Dropdown Text)**:
-   - Users can either pick from the dropdown list or type freely in `HospitalManagementModal` (Province & District) and `ReferralForm` (Province & District).
-3. **Crisp Flat Form Architecture (Shadow Removal)**:
-   - Purge all `shadow`, `shadow-sm`, `shadow-xs`, and `shadow-inner` classes from form input fields, textareas, and selects. The fields will use crisp 1px borders (`border-slate-300`) with emerald focus outlines (`focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600`).
-4. **Standardized English Imaging Dropdowns**:
-   - Modalities (CXR, Ultrasound, CT-Scan) feature native comboboxes with:
-     - `None` (ບໍ່ໄດ້ເຮັດ)
-     - `Normal` (ປົກກະຕິ)
-     - 5 Emergency & Trauma Findings
-5. **Physical Examination Quick Presets**:
-   - Dropdown selections for Motor Weakness, Pupils (L/R), Lung, Heart, Abdomen, and Other Findings.
+- **What It Does**: Transforms the Clinical Referral Intake form into a 100% crisp, flat medical paper interface with zero depth illusions, zero inset/outset shadows, and zero focus glow rings.
+- **Target Audience**: Emergency physicians, referral nurses, and dispatchers at Champasak Provincial Hospital and district health centers who require a clean, glare-free, clinical form interface.
+- **Key Value**: Crisp high-contrast legibility without subtle shadows or browser-induced blurry bevels on vital and lab input fields.
 
 ---
 
-## 2. Technical Architecture & Component Flow
+## 2. User Experience & Visual Design
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      src/data/facilities.ts                 │
-│                                                             │
-│   ├── SOUTHERN_PROVINCES (4 Southern Provinces)             │
-│   ├── SOUTHERN_DISTRICTS_BY_PROVINCE (Champasak, Salavan,   │
-│   │                                   Attapeu, Sekong)      │
-│   ├── IMAGING_PRESET_OPTIONS (None, Normal, 5 Diseases)     │
-│   └── PHYSICAL_EXAM_PRESETS (Pupils, Lung, Heart, Abdomen)  │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-            ┌──────────────────┴──────────────────┐
-            ▼                                     ▼
-┌──────────────────────────────┐    ┌──────────────────────────────┐
-│ HospitalManagementModal.tsx  │    │     ReferralForm.tsx         │
-│                              │    │                              │
-│ - Province Dropdown Text     │    │ - Step 1: Flat Inputs (No    │
-│ - District Dropdown Text     │    │   Shadows) + 4-Province      │
-│ - 2 Ambulance Plates         │    │   Filtered District Combobox │
-│                              │    │ - Step 3: English Imaging    │
-│                              │    │   Dropdown Text (None,       │
-│                              │    │   Normal, 5 Conditions)      │
-│                              │    │ - Step 4: Physical Exam      │
-│                              │    │   Dropdown Presets           │
-└──────────────────────────────┘    └──────────────────────────────┘
-```
+### Aesthetic Direction
+- **Flat Clinical Discipline**: Pure flat white input surfaces (`bg-white`), crisp 1px neutral borders (`border-slate-300`), and active state indicated solely by a solid border color change (`border-emerald-600`) with zero glow or blur.
+
+### Color & Spatial Tokens
+- **Input Canvas**: `#FFFFFF` (pure white, zero gradient, `background-image: none`).
+- **Input Border**: `#CBD5E1` (`slate-300`) resting, `#059669` (`emerald-600`) active focus.
+- **Shadow Enforcement**: `box-shadow: none !important; -webkit-box-shadow: none !important; -webkit-appearance: none !important;`.
+- **Containers**: Flat `border border-emerald-900/10` and `bg-emerald-50/30` with `shadow-none`.
 
 ---
 
-## 3. Implementation Plan Details
+## 3. Key Product Decisions & Trade-Offs
 
-### Step 1: `src/data/facilities.ts`
-- Define `SOUTHERN_PROVINCES = ['ຈຳປາສັກ', 'ສາລະວັນ', 'ອັດຕະປື', 'ເຊກອງ']`.
-- Define `SOUTHERN_DISTRICTS_BY_PROVINCE` mapping each province to its official districts in clean Lao text.
-- Define `IMAGING_ENGLISH_PRESETS`:
-  - `None`
-  - `Normal`
-  - `Intracranial Hemorrhage / Acute TBI`
-  - `Pneumonia / Lung Consolidation`
-  - `Pleural Effusion / Hemothorax`
-  - `Pneumothorax`
-  - `Intra-abdominal Free Fluid / Hemoperitoneum (FAST Positive)`
-- Define `PHYSICAL_EXAM_PRESETS` for pupils, lungs, heart, abdomen, and general exam.
+- **Decision 1: Global CSS Reset vs. Component-Only Classes**
+  - *Chosen Approach*: Apply both a global CSS rule in `src/index.css` targeting `input, textarea, select, button` AND explicit Tailwind utility classes (`shadow-none ring-0 focus:ring-0`) on every component input.
+  - *Why*: Browsers (especially Safari, WebKit, and Chromium mobile/desktop) often render default inset box-shadows (`-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1)`) on native text inputs that Tailwind utility classes alone do not completely neutralize without `appearance: none` and `box-shadow: none !important`.
+  - *Alternatives Considered*: Only editing Tailwind classes (which left the subtle browser shadow on WBC).
 
-### Step 2: `src/components/HospitalManagementModal.tsx`
-- Replace static selects with editable Combobox text inputs (`<input list="..." />` with `<datalist>`):
-  - `ຊື່ແຂວງ *`: Combobox with datalist of the 4 Southern Provinces + ability to type any province.
-  - `ເມືອງ *`: Combobox with datalist of districts corresponding to the chosen province + ability to type any district/village/health center.
+- **Decision 2: Focus Indication Without Glow**
+  - *Chosen Approach*: Solid 1px or 1.5px high-contrast border transition (`focus:border-emerald-600`) without any multi-pixel spread ring.
+  - *Why*: Meets WCAG accessibility requirements for focus visibility while remaining 100% shadow-free.
 
-### Step 3: `src/components/ReferralForm.tsx`
-- **Field Shadow Purge**: Remove all field shadows (`shadow`, `shadow-sm`, `shadow-xs`, etc.) across all 5 intake steps to ensure clean flat styling.
-- **Demographics (Step 1)**:
-  - Province & District converted to native comboboxes with datalists.
-  - Changing province dynamically updates the district datalist suggestions.
-- **Imaging (Step 3)**:
-  - CXR, Ultrasound, and CT-Scan converted to English combobox inputs with quick preset options (`None`, `Normal`, 5 Emergency conditions).
-- **Physical Exam (Step 4)**:
-  - Add quick dropdown selection buttons / datalists for Motor weakness, Pupils, Lung exam, Heart exam, Abdomen exam, and Other findings.
+---
 
-### Step 4: Verification
-- Execute `compile_applet` and `lint_applet` together.
-- Test production build with `npm run build`.
+## 4. Technical Architecture & Data Strategy
+
+```
+┌───────────────────────────────────────────────────────────────┐
+│                       Global CSS Layer                        │
+│                     (src/index.css)                           │
+│  - input, textarea, select { box-shadow: none !important; }   │
+│  - appearance: none !important;                               │
+│  - focus { outline: none !important; box-shadow: none ! }     │
+└───────────────────────────────┬───────────────────────────────┘
+                                │ enforces flat rendering
+                                ▼
+┌───────────────────────────────────────────────────────────────┐
+│            Clinical Referral Intake Form Component            │
+│               (src/components/ReferralForm.tsx)               │
+│                                                               │
+│  Step 1: Patient Demographics & Transfer Routing (Flat)       │
+│  Step 2: Diagnosis, History & Vital Signs (Flat)              │
+│  Step 3: Laboratory Investigations (WBC, HCT, etc.) & Imaging │
+│          - Pure flat white boxes                              │
+│          - border border-slate-300 shadow-none                │
+│          - focus:border-emerald-600 focus:outline-none        │
+│  Step 4: Physical Examination & GCS (Flat)                    │
+│  Step 5: Treatment Given & Dispatch Authorization (Flat)      │
+└───────────────────────────────────────────────────────────────┘
+```
+
+### Proposed Changes
+
+1. **`src/index.css`**:
+   - Add global reset rules for all form elements:
+     ```css
+     input, textarea, select {
+       box-shadow: none !important;
+       -webkit-box-shadow: none !important;
+       -moz-box-shadow: none !important;
+       -webkit-appearance: none !important;
+       appearance: none !important;
+     }
+     input:focus, textarea:focus, select:focus {
+       box-shadow: none !important;
+       -webkit-box-shadow: none !important;
+       -moz-box-shadow: none !important;
+       outline: none !important;
+     }
+     ```
+2. **`src/components/ReferralForm.tsx`**:
+   - Audit and enforce `shadow-none` across all input fields (including WBC, HCT, HB, PLT, Glucose, Creatinine, Urea, K/Na, Dengue, Other Labs, CXR, Ultrasound, CT-Scan, Physical Exam fields, GCS, and Demographics).
+3. **Verification**:
+   - Compile and lint applet (`compile_applet` and `lint_applet`).
+   - Run production build `npm run build` to confirm zero issues.

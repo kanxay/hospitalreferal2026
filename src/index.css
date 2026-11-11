@@ -4,6 +4,27 @@
   body {
     font-family: 'Noto Sans Lao', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
+
+  /* Completely eradicate all shadows, inner shadows, and focus glows across all form fields */
+  input, textarea, select {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    outline: none !important;
+  }
+
+  /* Reset inner shadow for WebKit inputs */
+  input[type="text"], input[type="number"], input[type="tel"], textarea {
+    background-image: none !important;
+  }
 }
 
 @media print {
