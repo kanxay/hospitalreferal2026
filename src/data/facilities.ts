@@ -1,5 +1,12 @@
 import { DistrictHospital, ReferralRecord } from '../types/referral';
 
+export const SOUTHERN_PROVINCES = [
+  'ຈຳປາສັກ',
+  'ສາລະວັນ',
+  'ອັດຕະປື',
+  'ເຊກອງ',
+] as const;
+
 export const CHAMPASAK_DISTRICTS = [
   'ເມືອງປາກເຊ',
   'ເມືອງຊະນະສົມບູນ',
@@ -12,6 +19,109 @@ export const CHAMPASAK_DISTRICTS = [
   'ເມືອງມູນລະປະໂມກ',
   'ເມືອງໂຂງ',
 ] as const;
+
+export const SALAVAN_DISTRICTS = [
+  'ເມືອງສາລະວັນ',
+  'ເມືອງຕະໂອ້ຍ',
+  'ເມືອງຕຸ້ມລານ',
+  'ເມືອງລະຄອນເພັງ',
+  'ເມືອງວາປີ',
+  'ເມືອງຄົງເຊໂດນ',
+  'ເມືອງເລົ່າງາມ',
+  'ເມືອງສະໝ້ວຍ',
+] as const;
+
+export const ATTAPEU_DISTRICTS = [
+  'ເມືອງສາມັກຄີໄຊ',
+  'ເມືອງໄຊເສດຖາ',
+  'ເມືອງສານໄຊ',
+  'ເມືອງພູວົງ',
+  'ເມືອງຊານໄຊ',
+] as const;
+
+export const SEKONG_DISTRICTS = [
+  'ເມືອງລະມາມ',
+  'ເມືອງກະລຶມ',
+  'ເມືອງດັກຈຶງ',
+  'ເມືອງທ່າແຕງ',
+] as const;
+
+export const SOUTHERN_DISTRICTS_BY_PROVINCE: Record<string, readonly string[]> = {
+  'ຈຳປາສັກ': CHAMPASAK_DISTRICTS,
+  'ແຂວງຈຳປາສັກ': CHAMPASAK_DISTRICTS,
+  'ສາລະວັນ': SALAVAN_DISTRICTS,
+  'ແຂວງສາລະວັນ': SALAVAN_DISTRICTS,
+  'ອັດຕະປື': ATTAPEU_DISTRICTS,
+  'ແຂວງອັດຕະປື': ATTAPEU_DISTRICTS,
+  'ເຊກອງ': SEKONG_DISTRICTS,
+  'ແຂວງເຊກອງ': SEKONG_DISTRICTS,
+};
+
+export const ALL_SOUTHERN_DISTRICTS = [
+  ...CHAMPASAK_DISTRICTS,
+  ...SALAVAN_DISTRICTS,
+  ...ATTAPEU_DISTRICTS,
+  ...SEKONG_DISTRICTS,
+];
+
+// Presets for English Imaging Dropdown
+export const IMAGING_ENGLISH_PRESETS = [
+  'None',
+  'Normal',
+  'Intracranial Hemorrhage / Acute TBI',
+  'Pneumonia / Lung Consolidation',
+  'Pleural Effusion / Hemothorax',
+  'Pneumothorax',
+  'Intra-abdominal Free Fluid / Hemoperitoneum (FAST Positive)',
+  'Bone Fracture / Dislocation',
+] as const;
+
+// Presets for Physical Examination Dropdowns
+export const PHYSICAL_EXAM_PRESETS = {
+  motorWeakness: [
+    'ປົກກະຕິ (No weakness)',
+    'Right hemiparesis (ອຳມະພຶກເຄິ່ງຊິກຂວາ)',
+    'Left hemiparesis (ອຳມະພຶກເຄິ່ງຊິກຊ້າຍ)',
+    'Paraplegia (ອຳມະພາດ 2 ຂາ)',
+    'Quadriplegia (ອຳມະພາດ 4 ຂາ)',
+  ],
+  pupils: [
+    '2mm RTL',
+    '3mm RTL',
+    '4mm RTL',
+    '4.5mm sluggish (Anisocoria)',
+    '5mm fixed/dilated',
+  ],
+  lungExam: [
+    'Clear bilaterally',
+    'Wheezing bilaterally',
+    'Crepitation / Crackles',
+    'Rhonchi',
+    'Decreased breath sounds',
+  ],
+  heartExam: [
+    'Normal S1 S2, regular, no murmur',
+    'Tachycardia (HR > 100 bpm)',
+    'Bradycardia (HR < 60 bpm)',
+    'Irregular rhythm / Arrhythmia',
+    'Systolic murmur',
+  ],
+  abdomenExam: [
+    'Soft, non-tender, not distended',
+    'Guarding / Abdominal rigidity',
+    'Rebound tenderness (+)',
+    'Distended, hypoactive bowel sounds',
+    'Palpable mass / Hepatomegaly',
+  ],
+  otherExam: [
+    'Normal / No acute distress',
+    'Battle sign / Otorrhea (+)',
+    'Pale conjunctiva / Anemia',
+    'Cyanosis / Peripheral hypoperfusion',
+    'Diaphoresis / Cold clammy sweat',
+    'Active hemorrhage / Multiple abrasions',
+  ],
+};
 
 export const DEFAULT_DISTRICT_HOSPITALS: DistrictHospital[] = [
   {

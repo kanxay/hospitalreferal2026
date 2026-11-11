@@ -23,6 +23,11 @@ import {
 } from '../types/referral';
 import { 
   CHAMPASAK_DISTRICTS, 
+  SOUTHERN_PROVINCES,
+  SOUTHERN_DISTRICTS_BY_PROVINCE,
+  ALL_SOUTHERN_DISTRICTS,
+  IMAGING_ENGLISH_PRESETS,
+  PHYSICAL_EXAM_PRESETS,
   RECEIVING_DEPARTMENTS, 
   INSURANCE_TYPES, 
   TRANSPORT_VEHICLES,
@@ -295,7 +300,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-emerald-900/10 shadow-sm max-w-4xl mx-auto overflow-hidden font-sans">
+    <div className="bg-white rounded-2xl border border-emerald-900/15 max-w-4xl mx-auto overflow-hidden font-sans">
       
       {/* Top Header */}
       <div className="p-5 border-b border-emerald-900/10 flex items-center justify-between bg-emerald-50/40">
@@ -340,7 +345,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 onClick={() => setCurrentStep(st.num)}
                 className={`flex items-center gap-2 text-left py-1.5 px-3 rounded-xl transition-all ${
                   isActive
-                    ? 'bg-emerald-50 text-emerald-950 ring-1 ring-emerald-600 font-bold'
+                    ? 'bg-emerald-50 text-emerald-950 border border-emerald-700 font-bold'
                     : isCompleted
                     ? 'text-slate-700 font-semibold hover:bg-emerald-50/40'
                     : 'text-slate-400'
@@ -392,7 +397,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   onClick={() => setTriageLevel('emergency')}
                   className={`p-3 rounded-xl border text-left transition-all ${
                     triageLevel === 'emergency'
-                      ? 'border-rose-500 bg-rose-50 ring-2 ring-rose-500'
+                      ? 'border-2 border-rose-600 bg-rose-50/90 font-bold'
                       : 'border-slate-200 hover:bg-rose-50/20'
                   }`}
                 >
@@ -408,7 +413,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   onClick={() => setTriageLevel('urgent')}
                   className={`p-3 rounded-xl border text-left transition-all ${
                     triageLevel === 'urgent'
-                      ? 'border-amber-500 bg-amber-50 ring-2 ring-amber-500'
+                      ? 'border-2 border-amber-600 bg-amber-50/90 font-bold'
                       : 'border-slate-200 hover:bg-amber-50/20'
                   }`}
                 >
@@ -424,7 +429,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   onClick={() => setTriageLevel('routine')}
                   className={`p-3 rounded-xl border text-left transition-all ${
                     triageLevel === 'routine'
-                      ? 'border-emerald-500 bg-emerald-50 ring-2 ring-emerald-500'
+                      ? 'border-2 border-emerald-600 bg-emerald-50/90 font-bold'
                       : 'border-slate-200 hover:bg-emerald-50/20'
                   }`}
                 >
@@ -448,7 +453,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   value={patientName}
                   onChange={(e) => setPatientName(e.target.value)}
                   placeholder="ຕົວຢ່າງ: ທ້າວ ຄຳສິງ ວົງສະຫວັນ"
-                  className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:outline-none text-sm"
+                  className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 text-sm bg-white"
                 />
               </div>
 
@@ -457,7 +462,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 <select
                   value={gender}
                   onChange={(e) => setGender(e.target.value as any)}
-                  className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                  className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
                 >
                   <option value="male">ຊາຍ (Male)</option>
                   <option value="female">ຍິງ (Female)</option>
@@ -475,7 +480,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   value={age}
                   onChange={(e) => setAge(e.target.value === '' ? '' : Number(e.target.value))}
                   placeholder="45"
-                  className="w-full p-2.5 border border-slate-300 rounded-xl font-mono focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                  className="w-full p-2.5 border border-slate-300 rounded-xl font-mono focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
                 />
               </div>
 
@@ -486,7 +491,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   value={idCardOrHN}
                   onChange={(e) => setIdCardOrHN(e.target.value)}
                   placeholder="HN-PS-8921"
-                  className="w-full p-2.5 border border-slate-300 rounded-xl font-mono focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                  className="w-full p-2.5 border border-slate-300 rounded-xl font-mono focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
                 />
               </div>
 
@@ -497,7 +502,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   value={occupation}
                   onChange={(e) => setOccupation(e.target.value)}
                   placeholder="ຊາວກະສິກອນ, ພະນັກງານ..."
-                  className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                  className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
                 />
               </div>
 
@@ -508,21 +513,51 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   value={village}
                   onChange={(e) => setVillage(e.target.value)}
                   placeholder="ບ້ານ ຫຼັກ 35"
-                  className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                  className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">ເມືອງ *</label>
-                <select
+                <label className="block font-bold text-slate-700 mb-1">ແຂວງ * (ເລືອກ ຫຼື ພິມເອງ)</label>
+                <input
+                  type="text"
+                  required
+                  list="form-province-list"
+                  value={province}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setProvince(val);
+                    const dists = SOUTHERN_DISTRICTS_BY_PROVINCE[val];
+                    if (dists && dists.length > 0 && !dists.includes(district)) {
+                      setDistrict(dists[0]);
+                    }
+                  }}
+                  placeholder="ເລືອກ ຫຼື ພິມຊື່ແຂວງ..."
+                  className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
+                />
+                <datalist id="form-province-list">
+                  {SOUTHERN_PROVINCES.map(p => (
+                    <option key={p} value={p}>{p}</option>
+                  ))}
+                </datalist>
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">ເມືອງ * (4 ແຂວງພາກໃຕ້)</label>
+                <input
+                  type="text"
+                  required
+                  list="form-district-list"
                   value={district}
                   onChange={(e) => setDistrict(e.target.value)}
-                  className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:outline-none"
-                >
-                  {CHAMPASAK_DISTRICTS.map(d => (
+                  placeholder="ເລືອກ ຫຼື ພິມຊື່ເມືອງ..."
+                  className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
+                />
+                <datalist id="form-district-list">
+                  {(SOUTHERN_DISTRICTS_BY_PROVINCE[province] || ALL_SOUTHERN_DISTRICTS).map(d => (
                     <option key={d} value={d}>{d}</option>
                   ))}
-                </select>
+                </datalist>
               </div>
 
               <div>
@@ -532,7 +567,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="020 xxxx xxxx"
-                  className="w-full p-2.5 border border-slate-300 rounded-xl font-mono focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                  className="w-full p-2.5 border border-slate-300 rounded-xl font-mono focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
                 />
               </div>
 
@@ -543,7 +578,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 <select
                   value={insuranceType}
                   onChange={(e) => setInsuranceType(e.target.value)}
-                  className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                  className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
                 >
                   {INSURANCE_TYPES.map(ins => (
                     <option key={ins} value={ins}>{ins}</option>
@@ -561,7 +596,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   type="text"
                   value={originHospital}
                   onChange={(e) => setOriginHospital(e.target.value)}
-                  className="w-full p-2.5 border border-slate-300 rounded-xl bg-white font-semibold"
+                  className="w-full p-2.5 border border-slate-300 rounded-xl bg-white font-semibold focus:border-emerald-600 focus:outline-none focus:ring-0"
                 />
               </div>
 
@@ -570,7 +605,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 <select
                   value={receivingDepartment}
                   onChange={(e) => setReceivingDepartment(e.target.value)}
-                  className="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-emerald-600"
+                  className="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                 >
                   {RECEIVING_DEPARTMENTS.map(dept => (
                     <option key={dept} value={dept}>{dept}</option>
@@ -616,7 +651,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 value={provisionalDiagnosis}
                 onChange={(e) => setProvisionalDiagnosis(e.target.value)}
                 placeholder="ຕົວຢ່າງ: Severe TBI with Epidural Hematoma, Acute Appendicitis, Severe PPH, NSTEMI"
-                className="w-full p-3 border border-emerald-300 rounded-xl bg-emerald-50/40 text-emerald-950 font-bold focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                className="w-full p-3 border border-emerald-400 rounded-xl bg-emerald-50/40 text-emerald-950 font-bold focus:border-emerald-600 focus:outline-none focus:ring-0"
               />
             </div>
 
@@ -629,7 +664,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 value={chiefComplaint}
                 onChange={(e) => setChiefComplaint(e.target.value)}
                 placeholder="ຕົວຢ່າງ: ໝົດສະຕິຫຼັງອຸບັດຕິເຫດ 1 ຊົ່ວໂມງ, ເຈັບແໜ້ນໜ້າເອິກຮຸນແຮງ 3 ຊົ່ວໂມງ"
-                className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
               />
             </div>
 
@@ -642,7 +677,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 value={presentIllness}
                 onChange={(e) => setPresentIllness(e.target.value)}
                 placeholder="ບັນທຶກລຳດັບເຫດການທີ່ເກີດຂຶ້ນ, ເວລາເລີ່ມມີອາການ, ຄວາມຮຸນແຮງ, ອາການຮ່ວມ..."
-                className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
               />
             </div>
 
@@ -669,7 +704,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   value={currentMedications}
                   onChange={(e) => setCurrentMedications(e.target.value)}
                   placeholder="Amlodipine 5mg, Metformin 500mg..."
-                  className="w-full p-2.5 border border-slate-300 rounded-xl"
+                  className="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                 />
               </div>
             </div>
@@ -683,7 +718,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 value={allergies}
                 onChange={(e) => setAllergies(e.target.value)}
                 placeholder="ປະຕິເສດການແພ້ຢາ ຫຼື ແພ້ Penicillin..."
-                className="w-full p-2.5 border border-slate-300 rounded-xl"
+                className="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
               />
             </div>
 
@@ -711,7 +746,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     value={wbc}
                     onChange={(e) => setWbc(e.target.value)}
                     placeholder="12,500"
-                    className="w-full p-1.5 border rounded-lg bg-white"
+                    className="w-full p-1.5 border border-slate-300 rounded-lg bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                 </div>
 
@@ -722,7 +757,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     value={hct}
                     onChange={(e) => setHct(e.target.value)}
                     placeholder="36%"
-                    className="w-full p-1.5 border rounded-lg bg-white"
+                    className="w-full p-1.5 border border-slate-300 rounded-lg bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                 </div>
 
@@ -733,7 +768,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     value={hb}
                     onChange={(e) => setHb(e.target.value)}
                     placeholder="12.0"
-                    className="w-full p-1.5 border rounded-lg bg-white"
+                    className="w-full p-1.5 border border-slate-300 rounded-lg bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                 </div>
 
@@ -744,7 +779,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     value={plt}
                     onChange={(e) => setPlt(e.target.value)}
                     placeholder="250,000"
-                    className="w-full p-1.5 border rounded-lg bg-white"
+                    className="w-full p-1.5 border border-slate-300 rounded-lg bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                 </div>
 
@@ -755,7 +790,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     value={glucose}
                     onChange={(e) => setGlucose(e.target.value)}
                     placeholder="110"
-                    className="w-full p-1.5 border rounded-lg bg-white"
+                    className="w-full p-1.5 border border-slate-300 rounded-lg bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                 </div>
 
@@ -766,7 +801,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     value={creatinine}
                     onChange={(e) => setCreatinine(e.target.value)}
                     placeholder="0.9"
-                    className="w-full p-1.5 border rounded-lg bg-white"
+                    className="w-full p-1.5 border border-slate-300 rounded-lg bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                 </div>
 
@@ -777,7 +812,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     value={urea}
                     onChange={(e) => setUrea(e.target.value)}
                     placeholder="18"
-                    className="w-full p-1.5 border rounded-lg bg-white"
+                    className="w-full p-1.5 border border-slate-300 rounded-lg bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                 </div>
 
@@ -789,14 +824,14 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                       value={k}
                       onChange={(e) => setK(e.target.value)}
                       placeholder="K: 4.0"
-                      className="w-1/2 p-1.5 border rounded-lg bg-white"
+                      className="w-1/2 p-1.5 border border-slate-300 rounded-lg bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                     />
                     <input
                       type="text"
                       value={na}
                       onChange={(e) => setNa(e.target.value)}
                       placeholder="Na: 138"
-                      className="w-1/2 p-1.5 border rounded-lg bg-white"
+                      className="w-1/2 p-1.5 border border-slate-300 rounded-lg bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                     />
                   </div>
                 </div>
@@ -808,7 +843,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     value={dengueNs1}
                     onChange={(e) => setDengueNs1(e.target.value)}
                     placeholder="Negative, Positive NS1..."
-                    className="w-full p-1.5 border rounded-lg bg-white font-sans"
+                    className="w-full p-1.5 border border-slate-300 rounded-lg bg-white font-sans focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                 </div>
 
@@ -819,7 +854,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     value={otherLabs}
                     onChange={(e) => setOtherLabs(e.target.value)}
                     placeholder="Troponin-T, Malaria RDT, ABG..."
-                    className="w-full p-1.5 border rounded-lg bg-white font-sans"
+                    className="w-full p-1.5 border border-slate-300 rounded-lg bg-white font-sans focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
                 </div>
 
@@ -835,45 +870,190 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 </h4>
               </div>
 
-              <div className="space-y-2.5">
-                <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
-                    Chest X-Ray (CXR)
-                  </label>
+              <div className="space-y-4">
+                
+                {/* Datalist for all Imaging comboboxes */}
+                <datalist id="imaging-english-options">
+                  {IMAGING_ENGLISH_PRESETS.map(item => (
+                    <option key={item} value={item} />
+                  ))}
+                </datalist>
+
+                {/* Chest X-Ray (CXR) */}
+                <div className="p-3 bg-white rounded-xl border border-slate-200 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="block font-bold text-slate-800 text-xs">
+                      1. Chest X-Ray (CXR) · ຜົນກວດເອັກສະເຣເອິກ
+                    </label>
+                    <span className="text-[11px] text-slate-500 font-mono">English Dropdown Text</span>
+                  </div>
                   <input
                     type="text"
+                    list="imaging-english-options"
                     value={cxr}
                     onChange={(e) => setCxr(e.target.value)}
-                    placeholder="No infiltration, cardiomegaly, rib fracture right 4-5..."
-                    className="w-full p-2 border border-slate-300 rounded-lg"
+                    placeholder="ເລືອກ ຫຼື ພິມ: None, Normal, Pneumonia, Pleural Effusion..."
+                    className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setCxr('None')}
+                      className={`px-2 py-0.5 rounded text-[11px] font-medium border transition-colors ${
+                        cxr === 'None'
+                          ? 'bg-slate-700 text-white border-slate-700'
+                          : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                      }`}
+                    >
+                      None (ບໍ່ໄດ້ເຮັດ)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCxr('Normal')}
+                      className={`px-2 py-0.5 rounded text-[11px] font-medium border transition-colors ${
+                        cxr === 'Normal'
+                          ? 'bg-emerald-700 text-white border-emerald-700'
+                          : 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100'
+                      }`}
+                    >
+                      Normal (ປົກກະຕິ)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCxr('Pneumonia / Lung Consolidation')}
+                      className="px-2 py-0.5 rounded text-[11px] bg-slate-50 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Pneumonia
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCxr('Pleural Effusion / Hemothorax')}
+                      className="px-2 py-0.5 rounded text-[11px] bg-slate-50 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Pleural Effusion
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCxr('Pneumothorax')}
+                      className="px-2 py-0.5 rounded text-[11px] bg-slate-50 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Pneumothorax
+                    </button>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
-                    Ultrasound (Echo / FAST / Abdomen)
-                  </label>
+                {/* Ultrasound */}
+                <div className="p-3 bg-white rounded-xl border border-slate-200 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="block font-bold text-slate-800 text-xs">
+                      2. Ultrasound (FAST / Abdomen / Echo) · ເອໂກ້-ອານຕຣາຊາວ
+                    </label>
+                    <span className="text-[11px] text-slate-500 font-mono">English Dropdown Text</span>
+                  </div>
                   <input
                     type="text"
+                    list="imaging-english-options"
                     value={ultrasound}
                     onChange={(e) => setUltrasound(e.target.value)}
-                    placeholder="FAST negative, Appendix enlarged 8mm, Gallstone..."
-                    className="w-full p-2 border border-slate-300 rounded-lg"
+                    placeholder="ເລືອກ ຫຼື ພິມ: None, Normal, Intra-abdominal Free Fluid (FAST Positive)..."
+                    className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setUltrasound('None')}
+                      className={`px-2 py-0.5 rounded text-[11px] font-medium border transition-colors ${
+                        ultrasound === 'None'
+                          ? 'bg-slate-700 text-white border-slate-700'
+                          : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                      }`}
+                    >
+                      None (ບໍ່ໄດ້ເຮັດ)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setUltrasound('Normal')}
+                      className={`px-2 py-0.5 rounded text-[11px] font-medium border transition-colors ${
+                        ultrasound === 'Normal'
+                          ? 'bg-emerald-700 text-white border-emerald-700'
+                          : 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100'
+                      }`}
+                    >
+                      Normal (ປົກກະຕິ)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setUltrasound('Intra-abdominal Free Fluid / Hemoperitoneum (FAST Positive)')}
+                      className="px-2 py-0.5 rounded text-[11px] bg-slate-50 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      FAST Positive / Free Fluid
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setUltrasound('Pleural Effusion / Hemothorax')}
+                      className="px-2 py-0.5 rounded text-[11px] bg-slate-50 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Pleural Fluid
+                    </button>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
-                    CT-Scan (Brain / Abdomen / Chest)
-                  </label>
+                {/* CT-Scan */}
+                <div className="p-3 bg-white rounded-xl border border-slate-200 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="block font-bold text-slate-800 text-xs">
+                      3. CT-Scan (Brain / Abdomen / Chest) · ຄອມພິວເຕີສະແກນ
+                    </label>
+                    <span className="text-[11px] text-slate-500 font-mono">English Dropdown Text</span>
+                  </div>
                   <input
                     type="text"
+                    list="imaging-english-options"
                     value={ctScan}
                     onChange={(e) => setCtScan(e.target.value)}
-                    placeholder="Pending CT Brain at Champasak Hospital..."
-                    className="w-full p-2 border border-slate-300 rounded-lg"
+                    placeholder="ເລືອກ ຫຼື ພິມ: None, Normal, Intracranial Hemorrhage / Acute TBI..."
+                    className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setCtScan('None')}
+                      className={`px-2 py-0.5 rounded text-[11px] font-medium border transition-colors ${
+                        ctScan === 'None'
+                          ? 'bg-slate-700 text-white border-slate-700'
+                          : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                      }`}
+                    >
+                      None (ບໍ່ໄດ້ເຮັດ)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCtScan('Normal')}
+                      className={`px-2 py-0.5 rounded text-[11px] font-medium border transition-colors ${
+                        ctScan === 'Normal'
+                          ? 'bg-emerald-700 text-white border-emerald-700'
+                          : 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100'
+                      }`}
+                    >
+                      Normal (ປົກກະຕິ)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCtScan('Intracranial Hemorrhage / Acute TBI')}
+                      className="px-2 py-0.5 rounded text-[11px] bg-slate-50 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Intracranial Hemorrhage (TBI)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCtScan('Pending CT Brain at Champasak Hospital')}
+                      className="px-2 py-0.5 rounded text-[11px] bg-slate-50 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Pending CT Brain at ER
+                    </button>
+                  </div>
                 </div>
+
               </div>
             </div>
 
@@ -995,7 +1175,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 </div>
 
                 {/* GCS Total Result Badge */}
-                <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-emerald-300 shadow-2xs font-mono">
+                <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-emerald-300 font-mono">
                   <span className="text-xs font-bold text-emerald-950">
                     GCS: <strong className="text-base text-emerald-800">{calculatedGcs.total}</strong>/15
                   </span>
@@ -1063,86 +1243,276 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
               </div>
             </div>
 
-            {/* Other Physical Exam */}
+            {/* Other Physical Exam with Dropdown Lists */}
             <div className="space-y-3">
-              <h4 className="font-bold text-emerald-950 text-sm">
-                ຜົນກວດຮ່າງກາຍອື່ນໆ (Physical Examination)
-              </h4>
+              <div className="flex items-center justify-between pb-1.5 border-b border-emerald-900/10">
+                <h4 className="font-bold text-emerald-950 text-sm">
+                  ຜົນກວດຮ່າງກາຍອື່ນໆ (Physical Examination)
+                </h4>
+                <span className="text-[11px] text-slate-500 font-mono">Dropdown List & Typing</span>
+              </div>
+
+              {/* Datalists for Physical Exam */}
+              <datalist id="exam-motor-list">
+                {PHYSICAL_EXAM_PRESETS.motorWeakness.map(item => (
+                  <option key={item} value={item} />
+                ))}
+              </datalist>
+              <datalist id="exam-pupil-list">
+                {PHYSICAL_EXAM_PRESETS.pupils.map(item => (
+                  <option key={item} value={item} />
+                ))}
+              </datalist>
+              <datalist id="exam-lung-list">
+                {PHYSICAL_EXAM_PRESETS.lungExam.map(item => (
+                  <option key={item} value={item} />
+                ))}
+              </datalist>
+              <datalist id="exam-heart-list">
+                {PHYSICAL_EXAM_PRESETS.heartExam.map(item => (
+                  <option key={item} value={item} />
+                ))}
+              </datalist>
+              <datalist id="exam-abdomen-list">
+                {PHYSICAL_EXAM_PRESETS.abdomenExam.map(item => (
+                  <option key={item} value={item} />
+                ))}
+              </datalist>
+              <datalist id="exam-other-list">
+                {PHYSICAL_EXAM_PRESETS.otherExam.map(item => (
+                  <option key={item} value={item} />
+                ))}
+              </datalist>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* Motor Weakness */}
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">
                     Motor Weakness (ກ້າມຊີ້ນອ່ອນແຮງ / ອຳມະພຶກ)
                   </label>
                   <input
                     type="text"
+                    list="exam-motor-list"
                     value={motorWeakness}
                     onChange={(e) => setMotorWeakness(e.target.value)}
-                    placeholder="ປົກກະຕິ, ອຳມະພຶກເຄິ່ງຊິກຂວາ, ແຂນຂາອ່ອນແຮງ..."
-                    className="w-full p-2 border border-slate-300 rounded-lg"
+                    placeholder="ເລືອກ ຫຼື ພິມ: ປົກກະຕິ, ອຳມະພຶກເຄິ່ງຊິກ..."
+                    className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
-                    Pupils (ຮູມ່ານຕາ ຊ້າຍ-ຂວາ)
-                  </label>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={pupilLeft}
-                      onChange={(e) => setPupilLeft(e.target.value)}
-                      placeholder="L: 3mm RTL"
-                      className="w-1/2 p-2 border border-slate-300 rounded-lg font-mono"
-                    />
-                    <input
-                      type="text"
-                      value={pupilRight}
-                      onChange={(e) => setPupilRight(e.target.value)}
-                      placeholder="R: 3mm RTL"
-                      className="w-1/2 p-2 border border-slate-300 rounded-lg font-mono"
-                    />
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    <button
+                      type="button"
+                      onClick={() => setMotorWeakness('ປົກກະຕິ (No weakness)')}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      ປົກກະຕິ
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setMotorWeakness('Left hemiparesis (ອຳມະພຶກເຄິ່ງຊິກຊ້າຍ)')}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      ເຄິ່ງຊິກຊ້າຍ
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setMotorWeakness('Right hemiparesis (ອຳມະພຶກເຄິ່ງຊິກຂວາ)')}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      ເຄິ່ງຊິກຂວາ
+                    </button>
                   </div>
                 </div>
 
+                {/* Pupils */}
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">
+                    Pupils (ຮູມ່ານຕາ ຊ້າຍ - ຂວາ)
+                  </label>
+                  <div className="flex gap-2">
+                    <div className="w-1/2">
+                      <input
+                        type="text"
+                        list="exam-pupil-list"
+                        value={pupilLeft}
+                        onChange={(e) => setPupilLeft(e.target.value)}
+                        placeholder="L: 3mm RTL"
+                        className="w-full p-2.5 border border-slate-300 rounded-xl bg-white font-mono text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
+                      />
+                    </div>
+                    <div className="w-1/2">
+                      <input
+                        type="text"
+                        list="exam-pupil-list"
+                        value={pupilRight}
+                        onChange={(e) => setPupilRight(e.target.value)}
+                        placeholder="R: 3mm RTL"
+                        className="w-full p-2.5 border border-slate-300 rounded-xl bg-white font-mono text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    <button
+                      type="button"
+                      onClick={() => { setPupilLeft('3mm RTL'); setPupilRight('3mm RTL'); }}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      3mm RTL (ທັງ 2 ຂ້າງ)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => { setPupilLeft('3mm RTL'); setPupilRight('4.5mm sluggish (Anisocoria)'); }}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Anisocoria (ບໍ່ເທົ່າກັນ)
+                    </button>
+                  </div>
+                </div>
+
+                {/* Lung Exam */}
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">
                     Lung Exam (ຟັງສຽງປອດ)
                   </label>
                   <input
                     type="text"
+                    list="exam-lung-list"
                     value={lungExam}
                     onChange={(e) => setLungExam(e.target.value)}
                     placeholder="Clear bilaterally, Wheezing, Crepitation..."
-                    className="w-full p-2 border border-slate-300 rounded-lg"
+                    className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    <button
+                      type="button"
+                      onClick={() => setLungExam('Clear bilaterally')}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Clear
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setLungExam('Wheezing bilaterally')}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Wheezing
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setLungExam('Crepitation / Crackles')}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Crepitation
+                    </button>
+                  </div>
                 </div>
 
+                {/* Heart Exam */}
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">
                     Heart Exam (ຟັງສຽງຫົວໃຈ)
                   </label>
                   <input
                     type="text"
+                    list="exam-heart-list"
                     value={heartExam}
                     onChange={(e) => setHeartExam(e.target.value)}
-                    placeholder="Normal S1 S2, Murmur..."
-                    className="w-full p-2 border border-slate-300 rounded-lg"
+                    placeholder="Normal S1 S2, Tachycardia, Murmur..."
+                    className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    <button
+                      type="button"
+                      onClick={() => setHeartExam('Normal S1 S2, regular, no murmur')}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Normal S1 S2
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setHeartExam('Tachycardia (HR > 100 bpm)')}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Tachycardia
+                    </button>
+                  </div>
                 </div>
 
-                <div className="sm:col-span-2">
+                {/* Abdomen Exam */}
+                <div>
                   <label className="block font-semibold text-slate-700 mb-1">
-                    Abdomen & Other Findings (ກວດທ້ອງ ແລະ ອາການອື່ນໆ)
+                    Abdomen Exam (ກວດທ້ອງ)
                   </label>
                   <input
                     type="text"
+                    list="exam-abdomen-list"
                     value={abdomenExam}
                     onChange={(e) => setAbdomenExam(e.target.value)}
-                    placeholder="Soft, Guarding right lower quadrant, Rebound tenderness..."
-                    className="w-full p-2 border border-slate-300 rounded-lg"
+                    placeholder="Soft, non-tender, Guarding, Rebound tenderness..."
+                    className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
                   />
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    <button
+                      type="button"
+                      onClick={() => setAbdomenExam('Soft, non-tender, not distended')}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Soft, non-tender
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAbdomenExam('Guarding / Abdominal rigidity')}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Guarding
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAbdomenExam('Rebound tenderness (+)')}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Rebound (+)
+                    </button>
+                  </div>
                 </div>
+
+                {/* Other Findings */}
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">
+                    Other Findings (ອາການກວດຮ່າງກາຍອື່ນໆ)
+                  </label>
+                  <input
+                    type="text"
+                    list="exam-other-list"
+                    value={otherFindings}
+                    onChange={(e) => setOtherFindings(e.target.value)}
+                    placeholder="Battle sign, Pale conjunctiva, Cyanosis..."
+                    className="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-xs focus:border-emerald-600 focus:outline-none focus:ring-0"
+                  />
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    <button
+                      type="button"
+                      onClick={() => setOtherFindings('Normal / No acute distress')}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Normal
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setOtherFindings('Battle sign / Otorrhea (+)')}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Battle sign (+)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setOtherFindings('Pale conjunctiva / Anemia')}
+                      className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200"
+                    >
+                      Pale
+                    </button>
+                  </div>
+                </div>
+
               </div>
             </div>
 
@@ -1162,7 +1532,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 value={initialTreatment}
                 onChange={(e) => setInitialTreatment(e.target.value)}
                 placeholder="IV NSS 1000ml, On O2 cannula, Ceftriaxone 2g IV stat, Collar fixed, Splint applied..."
-                className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
               />
             </div>
 
@@ -1176,7 +1546,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 value={transferReason}
                 onChange={(e) => setTransferReason(e.target.value)}
                 placeholder="ເກີນຂີດຄວາມສາມາດໃນການຜ່າຕັດ, ຕ້ອງການນອນ ICU, ຕ້ອງການກວດ CT-Brain..."
-                className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                className="w-full p-2.5 border border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none focus:ring-0 bg-white"
               />
             </div>
 
@@ -1191,7 +1561,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   value={targetCoordinator}
                   onChange={(e) => setTargetCoordinator(e.target.value)}
                   placeholder="ດຣ. ຄຳພັນ (ແພດເວນ ER ໂຮງໝໍແຂວງ)"
-                  className="w-full p-2.5 border border-slate-300 rounded-xl"
+                  className="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                 />
               </div>
 
@@ -1202,7 +1572,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                 <select
                   value={transportVehicle}
                   onChange={(e) => setTransportVehicle(e.target.value)}
-                  className="w-full p-2.5 border border-slate-300 rounded-xl bg-white"
+                  className="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                 >
                   {TRANSPORT_VEHICLES.map(v => (
                     <option key={v} value={v}>{v}</option>
@@ -1220,7 +1590,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   value={referringDoctor}
                   onChange={(e) => setReferringDoctor(e.target.value)}
                   placeholder="ດຣ. ສົມສັກ ແສງທອງ"
-                  className="w-full p-2.5 border border-slate-300 rounded-xl"
+                  className="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                 />
               </div>
 
@@ -1234,7 +1604,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                   value={referringDoctorPhone}
                   onChange={(e) => setReferringDoctorPhone(e.target.value)}
                   placeholder="020 xxxx xxxx"
-                  className="w-full p-2.5 border border-slate-300 rounded-xl font-mono"
+                  className="w-full p-2.5 border border-slate-300 rounded-xl font-mono bg-white focus:border-emerald-600 focus:outline-none focus:ring-0"
                 />
               </div>
 
@@ -1248,7 +1618,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     onClick={() => setAmbulanceCode(matchedHosp?.ambulancePlate1 || 'ກກ 1122 ຈຳປາສັກ')}
                     className={`p-3 rounded-xl border text-left transition-all ${
                       ambulanceCode === (matchedHosp?.ambulancePlate1 || 'ກກ 1122 ຈຳປາສັກ')
-                        ? 'border-emerald-700 bg-emerald-50 text-emerald-950 font-bold ring-2 ring-emerald-600/30'
+                        ? 'border-2 border-emerald-700 bg-emerald-50 text-emerald-950 font-bold'
                         : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-700'
                     }`}
                   >
@@ -1268,7 +1638,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
                     onClick={() => setAmbulanceCode(matchedHosp?.ambulancePlate2 || 'ກຂ 3344 ຈຳປາສັກ')}
                     className={`p-3 rounded-xl border text-left transition-all ${
                       ambulanceCode === (matchedHosp?.ambulancePlate2 || 'ກຂ 3344 ຈຳປາສັກ')
-                        ? 'border-emerald-700 bg-emerald-50 text-emerald-950 font-bold ring-2 ring-emerald-600/30'
+                        ? 'border-2 border-emerald-700 bg-emerald-50 text-emerald-950 font-bold'
                         : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-700'
                     }`}
                   >
@@ -1348,7 +1718,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
               <button
                 type="button"
                 onClick={handleNextStep}
-                className="flex items-center gap-1.5 px-5 py-2.5 text-xs font-bold text-white bg-emerald-800 hover:bg-emerald-900 rounded-xl transition-colors shadow-xs"
+                className="flex items-center gap-1.5 px-5 py-2.5 text-xs font-bold text-white bg-emerald-800 hover:bg-emerald-900 rounded-xl transition-colors"
               >
                 <span>ຂັ້ນຕອນຕໍ່ໄປ (Next)</span>
                 <ChevronRight className="w-4 h-4" />
@@ -1357,7 +1727,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex items-center gap-2 px-6 py-2.5 text-xs font-bold text-white bg-emerald-800 hover:bg-emerald-900 rounded-xl transition-colors shadow-md disabled:opacity-50"
+                className="flex items-center gap-2 px-6 py-2.5 text-xs font-bold text-white bg-emerald-800 hover:bg-emerald-900 rounded-xl transition-colors disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
                 <span>{isSubmitting ? 'ກຳລັງບັນທຶກ...' : 'ບັນທຶກ ແລະ ສົ່ງໃບສົ່ງຕົວ (Submit Referral)'}</span>

@@ -13,7 +13,12 @@ import {
   MapPin
 } from 'lucide-react';
 import { DistrictHospital } from '../types/referral';
-import { CHAMPASAK_DISTRICTS } from '../data/facilities';
+import { 
+  CHAMPASAK_DISTRICTS, 
+  SOUTHERN_PROVINCES, 
+  SOUTHERN_DISTRICTS_BY_PROVINCE, 
+  ALL_SOUTHERN_DISTRICTS 
+} from '../data/facilities';
 import { dbService } from '../services/db';
 
 interface HospitalManagementModalProps {
@@ -199,35 +204,53 @@ export const HospitalManagementModal: React.FC<HospitalManagementModalProps> = (
 
               <form onSubmit={editingId ? handleSaveEdit : handleCreateHospital} className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 
-                {/* 1. ຊື່ແຂວງ: Text */}
+                {/* 1. ຊື່ແຂວງ: DROPDOWN TEXT (ເລືອກໄດ້ ແລະ ພິມໄດ້) */}
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">
-                    ຊື່ແຂວງ *
+                    ຊື່ແຂວງ * (ເລືອກ ຫຼື ພິມເອງ)
                   </label>
                   <input
                     type="text"
                     required
+                    list="modal-provinces-list"
                     value={province}
-                    onChange={(e) => setProvince(e.target.value)}
-                    placeholder="ຕົວຢ່າງ: ຈຳປາສັກ"
-                    className="w-full p-2 border border-slate-300 rounded-lg bg-white"
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setProvince(val);
+                      const dists = SOUTHERN_DISTRICTS_BY_PROVINCE[val];
+                      if (dists && dists.length > 0 && !dists.includes(district)) {
+                        setDistrict(dists[0]);
+                      }
+                    }}
+                    placeholder="ເລືອກ ຫຼື ພິມຊື່ແຂວງ..."
+                    className="w-full p-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-emerald-600"
                   />
+                  <datalist id="modal-provinces-list">
+                    {SOUTHERN_PROVINCES.map(p => (
+                      <option key={p} value={p}>{p}</option>
+                    ))}
+                  </datalist>
                 </div>
 
-                {/* ເມືອງ */}
+                {/* ເມືອງ: DROPDOWN TEXT (ເລືອກໄດ້ ແລະ ພິມໄດ້) */}
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">
-                    ເມືອງ *
+                    ເມືອງ * (ເລືອກ ຫຼື ພິມເອງ)
                   </label>
-                  <select
+                  <input
+                    type="text"
+                    required
+                    list="modal-districts-list"
                     value={district}
                     onChange={(e) => setDistrict(e.target.value)}
-                    className="w-full p-2 border border-slate-300 rounded-lg bg-white"
-                  >
-                    {CHAMPASAK_DISTRICTS.map(d => (
+                    placeholder="ເລືອກ ຫຼື ພິມຊື່ເມືອງ..."
+                    className="w-full p-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-emerald-600"
+                  />
+                  <datalist id="modal-districts-list">
+                    {(SOUTHERN_DISTRICTS_BY_PROVINCE[province] || ALL_SOUTHERN_DISTRICTS).map(d => (
                       <option key={d} value={d}>{d}</option>
                     ))}
-                  </select>
+                  </datalist>
                 </div>
 
                 {/* 2. ຊື່ໂຮງຫມໍເມື່ອງ: Text */}
