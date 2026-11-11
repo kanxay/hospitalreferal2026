@@ -139,7 +139,7 @@ export const ReferralForm: React.FC<ReferralFormProps> = ({
   // --- Step 5: Management, Transfer & Logistics ---
   const [initialTreatment, setInitialTreatment] = useState('');
   const [transferReason, setTransferReason] = useState('');
-  const [targetCoordinator, setTargetCoordinator] = useState('ແພດເວນ ER ໂຮງໝໍແຂວງຈຳປາສັກ');
+  const [targetCoordinator, setTargetCoordinator] = useState('ແພດຍາດສຸກເສີນ');
   const [transportVehicle, setTransportVehicle] = useState<string>(TRANSPORT_VEHICLES[0]);
   const [referringDoctor, setReferringDoctor] = useState('');
   const [referringDoctorPhone, setReferringDoctorPhone] = useState(matchedHosp?.phone || '');

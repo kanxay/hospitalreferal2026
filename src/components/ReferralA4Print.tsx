@@ -514,36 +514,27 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
                 </div>
                 <div>
                   <p><span className="font-bold text-slate-800">ພະແນກປາຍທາງ: </span>{referral.receivingDepartment} (ໂຮງໝໍແຂວງຈຳປາສັກ)</p>
-                  <p><span className="font-bold text-slate-800">ຜູ້ຮັບປາຍທາງ ER: </span>{referral.targetCoordinator || 'ແພດເວນ ER'}</p>
+                  <p><span className="font-bold text-slate-800">ຜູ້ຮັບປາຍທາງ ER: </span>{referral.targetCoordinator || 'ແພດຍາດສຸກເສີນ'}</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Signature section (Expanded to fill the A4 bottom space) */}
+          {/* Signature section (Expanded blank space for manual signature & stamp) */}
           <div className="grid grid-cols-2 gap-8 pt-4 border-t border-slate-300 text-[13px] text-center">
             {/* Left Column: ຜູ້ອຳນວຍການ */}
             <div>
               <p className="font-bold text-slate-900 text-[13px]">ຜູ້ອຳນວຍການ</p>
-              {/* Expanded blank space for manual signature / stamp without hospital name or underline */}
-              <div className="min-h-[120px] sm:min-h-[135px] flex items-center justify-center">
-                <span className="text-[12px] text-slate-300 print:hidden select-none">(ບ່ອນເຊັນ ແລະ ປະທັບກາ)</span>
-              </div>
+              {/* Clean blank space for manual signature & official seal */}
+              <div className="min-h-[120px] sm:min-h-[135px]" />
             </div>
 
             {/* Right Column: ທ່ານຫມໍສົ່ງຄົນເຈັບ */}
             <div>
               <p className="font-bold text-slate-900 text-[13px]">ທ່ານຫມໍສົ່ງຄົນເຈັບ</p>
-              {/* Expanded blank space for manual signature without hospital name or underline */}
-              <div className="min-h-[120px] sm:min-h-[135px] flex items-center justify-center">
-                <span className="text-[12px] text-slate-300 print:hidden select-none">(ບ່ອນລາຍເຊັນ)</span>
-              </div>
+              {/* Clean blank space for manual signature */}
+              <div className="min-h-[120px] sm:min-h-[135px]" />
             </div>
-          </div>
-
-          {/* Compact Footer note */}
-          <div className="mt-3 pt-2 border-t border-slate-200 text-[11px] text-slate-400 text-center font-mono">
-            EMSCPS Champasak Provincial Hospital EMS Referral Network · Generated electronically
           </div>
 
         </div>

@@ -256,10 +256,10 @@ export const INSURANCE_TYPES = [
 ] as const;
 
 export const TRANSPORT_VEHICLES = [
-  'ລົດສຸກເສີນ EMS ຂັ້ນສູງ (Advance Life Support Ambulance - ALS)',
-  'ລົດສຸກເສີນ EMS ຂັ້ນພື້ນຖານ (Basic Life Support Ambulance - BLS)',
-  'ລົດຕູ້ສົ່ງຕໍ່ຄົນເຈັບພ້ອມຖັງ O2 (Patient Transport Van)',
-  'ເຮືອໄວສຸກເສີນ (Speedboat EMS - ເຂດເກາະດອນເມືອງໂຂງ)',
+  'ລົດສຸກເສີນ EMS ຂັ້ນສູງ',
+  'ລົດສຸກເສີນ EMS ຂັ້ນພື້ນຖານ',
+  'ລົດຕູ້ສົ່ງຕໍ່ຄົນເຈັບພ້ອມຖັງ O2',
+  'ເຮືອໄວສຸກເສີນ',
   'ລົດຍາດຕິພີ່ນ້ອງ/ລົດຮັບຈ້າງ',
 ] as const;
 

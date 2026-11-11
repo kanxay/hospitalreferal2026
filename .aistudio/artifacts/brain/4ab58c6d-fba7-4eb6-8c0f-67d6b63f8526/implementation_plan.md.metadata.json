@@ -1,6 +1,6 @@
 {
-  "summary":  "Implementation plan to expand Referral A4 Print layout: increase body font size to 13px with relaxed row spacing and expand the signature box at the bottom to fill the A4 height cleanly.",
-  "updatedAt":  "2026-11-11T12:10:02.497222102Z",
+  "summary":  "Implementation plan to:\n1. Remove the footer note 'EMSCPS Champasak Provincial Hospital EMS Referral Network · Generated electronically' from ReferralA4Print.\n2. Remove signature hint texts '(ບ່ອນເຊັນ ແລະ ປະທັບກາ)' and '(ບ່ອນລາຍເຊັນ)' leaving clean blank space.\n3. Update Transport Vehicle dropdown options to the 5 clean choices specified.\n4. Set Target Coordinator at ER to 'ແພດຍາດສຸກເສີນ' and remove all other options.",
+  "updatedAt":  "2026-11-11T12:28:39.333139261Z",
   "requestFeedback":  true,
   "userFacing":  true
 }

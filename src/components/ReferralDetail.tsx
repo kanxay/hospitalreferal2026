@@ -552,7 +552,7 @@ export const ReferralDetail: React.FC<ReferralDetailProps> = ({
               <div className="pt-2 border-t border-slate-100">
                 <span className="text-slate-600 block">ຜູ້ຮັບປາຍທາງ ER ໂຮງໝໍແຂວງ:</span>
                 <span className="font-semibold text-slate-900 block">
-                  {referral.targetCoordinator || referral.receivingDoctor || 'ແພດເວນ ER'}
+                  {referral.targetCoordinator || referral.receivingDoctor || 'ແພດຍາດສຸກເສີນ'}
                 </span>
               </div>
 
