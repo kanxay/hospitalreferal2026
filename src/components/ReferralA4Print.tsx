@@ -172,13 +172,17 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
     return text.replace(/\s*\([^)]*[a-zA-Z]+[^)]*\)/g, '').trim();
   };
 
-  // Helper to remove abbreviation (NHI/ປສຊ) as requested: "(NHI/ປສຊ) ຕັດຕົວຫຍໍ້ອອກ"
+  // Helper to format insurance type display
   const cleanInsurance = (text?: string) => {
-    if (!text) return 'ກອງທຶນປະກັນສຸຂະພາບແຫ່ງຊາດ';
-    return text
-      .replace(/\s*\([^)]*(?:NHI|ປສຊ)[^)]*\)/gi, '')
-      .replace(/\b(?:NHI|ປສຊ)\b/gi, '')
-      .trim() || 'ກອງທຶນປະກັນສຸຂະພາບແຫ່ງຊາດ';
+    if (!text) return 'ກອງທຶນປະກັນສຸຂະພາບແຫ່ງຊາດ (NHI/ກປຊ)';
+    let val = text;
+    if (val.includes('ປສຊ')) {
+      val = val.replace('ປສຊ', 'ກປຊ');
+    }
+    if (val.includes('ອົງການປະກັນສັງຄົມແຫ່ງຊາດ')) {
+      val = val.replace('ອົງການປະກັນສັງຄົມແຫ່ງຊາດ', 'ກອງທຶນປະກັນສັງຄົມແຫ່ງຊາດ');
+    }
+    return val;
   };
 
   const provinceName = stripEnglishTag(referral.province) || 'ຈຳປາສັກ';

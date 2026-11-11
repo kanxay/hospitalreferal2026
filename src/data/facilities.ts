@@ -247,8 +247,8 @@ export const DEFAULT_DISTRICT_HOSPITALS: DistrictHospital[] = [
 ];
 
 export const INSURANCE_TYPES = [
-  'ກອງທຶນປະກັນສຸຂະພາບແຫ່ງຊາດ (NHI/ປສຊ)',
-  'ອົງການປະກັນສັງຄົມແຫ່ງຊາດ (NSSF/ກປສ)',
+  'ກອງທຶນປະກັນສຸຂະພາບແຫ່ງຊາດ (NHI/ກປຊ)',
+  'ກອງທຶນປະກັນສັງຄົມແຫ່ງຊາດ (NSSF/ກປສ)',
   'ປະກັນສຸຂະພາບເອກະຊົນ',
   'ຈ່າຍເອງທັງໝົດ (Self-pay)',
   'ຍົກເວັ້ນຄ່າທຳນຽມ/ນະໂຍບາຍອະນາຖາ',
@@ -322,7 +322,7 @@ export const INITIAL_MOCK_REFERRALS: ReferralRecord[] = [
     village: 'ບ້ານ ຫຼັກ 35',
     district: 'ເມືອງປາກຊ່ອງ',
     province: 'ຈຳປາສັກ',
-    insuranceType: 'ກອງທຶນປະກັນສຸຂະພາບແຫ່ງຊາດ (NHI/ປສຊ)',
+    insuranceType: 'ກອງທຶນປະກັນສຸຂະພາບແຫ່ງຊາດ (NHI/ກປຊ)',
     idCardOrHN: 'HN-PS-8921',
     phone: '020 5542 1899',
     admissionDate: '2026-11-10',
@@ -418,7 +418,7 @@ export const INITIAL_MOCK_REFERRALS: ReferralRecord[] = [
     village: 'ບ້ານ ທ່າຄໍ້',
     district: 'ເມືອງຊະນະສົມບູນ',
     province: 'ຈຳປາສັກ',
-    insuranceType: 'ກອງທຶນປະກັນສຸຂະພາບແຫ່ງຊາດ (NHI/ປສຊ)',
+    insuranceType: 'ກອງທຶນປະກັນສຸຂະພາບແຫ່ງຊາດ (NHI/ກປຊ)',
     idCardOrHN: 'HN-SNB-4412',
     phone: '020 2234 5678',
     admissionDate: '2026-11-10',
@@ -498,7 +498,7 @@ export const INITIAL_MOCK_REFERRALS: ReferralRecord[] = [
     village: 'ບ້ານ ນາກະສັງ',
     district: 'ເມືອງໂຂງ',
     province: 'ຈຳປາສັກ',
-    insuranceType: 'ກອງທຶນປະກັນສຸຂະພາບແຫ່ງຊາດ (NHI/ປສຊ)',
+    insuranceType: 'ກອງທຶນປະກັນສຸຂະພາບແຫ່ງຊາດ (NHI/ກປຊ)',
     idCardOrHN: 'HN-KHG-3390',
     phone: '020 9871 2345',
     admissionDate: '2026-11-10',

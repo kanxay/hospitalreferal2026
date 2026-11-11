@@ -78,6 +78,22 @@ class ReferralDatabaseService {
       const existing = localStorage.getItem(STORAGE_KEY);
       if (!existing) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_MOCK_REFERRALS));
+      } else {
+        const list: ReferralRecord[] = JSON.parse(existing);
+        let changed = false;
+        const upgraded = list.map(r => {
+          if (r.insuranceType && (r.insuranceType.includes('ປສຊ') || r.insuranceType.includes('ອົງການປະກັນສັງຄົມ'))) {
+            changed = true;
+            let newType = r.insuranceType;
+            if (newType.includes('ປສຊ')) newType = newType.replace('ປສຊ', 'ກປຊ');
+            if (newType.includes('ອົງການປະກັນສັງຄົມແຫ່ງຊາດ')) newType = newType.replace('ອົງການປະກັນສັງຄົມແຫ່ງຊາດ', 'ກອງທຶນປະກັນສັງຄົມແຫ່ງຊາດ');
+            return { ...r, insuranceType: newType };
+          }
+          return r;
+        });
+        if (changed) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(upgraded));
+        }
       }
     } catch (err) {
       console.warn('LocalStorage error:', err);
