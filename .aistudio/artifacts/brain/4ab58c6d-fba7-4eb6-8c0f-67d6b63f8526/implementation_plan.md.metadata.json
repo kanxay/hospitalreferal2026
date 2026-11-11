@@ -1,6 +1,6 @@
 {
-  "summary":  "Summary of completed Referral A4 Print and PDF slip adjustments:\n- Added built-in vector SVG of the National Emblem of Laos (Pha That Luang, rice stalks, cogwheel gear, reservoir, red ribbons).\n- Centered Lao national motto block with ***==***.\n- Subheader: Left side showing province and origin hospital; Right side showing REF ID, HN, phone, and triage level on the same line.\n- Removed unwanted divider line below header.\n- Cleaned insurance string to remove abbreviations like (NHI/ປສຊ).\n- Inline diagnosis continuation directly in Section II header.\n- Removed hardcoded/spurious oxygen device text.\n- Inline initial treatment continuation directly in Section V.\n- Redesigned signature section: Left \"ຜູ້ອຳນວຍການ\", Right \"ທ່ານຫມໍສົ່ງຄົນເຈັບ\", removed hospital names and underlines, leaving generous blank space for manual signing/stamping.\n- Configured single-page A4 print layout avoiding page 2 overflow, with direct browser Print and Save-as-PDF support.",
-  "updatedAt":  "2026-11-11T11:08:56.503302738Z",
+  "summary":  "Implementation plan to integrate the official Lao National Emblem supporting both public/assets/lao-emblem.png and a Logo Uploader in Admin Settings with browser persistence and fallback handling.",
+  "updatedAt":  "2026-11-11T11:19:25.691135936Z",
   "requestFeedback":  true,
   "userFacing":  true
 }

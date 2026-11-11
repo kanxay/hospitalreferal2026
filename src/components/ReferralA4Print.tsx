@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Printer, Download, Info } from 'lucide-react';
 import { ReferralRecord } from '../types/referral';
+import { logoService, DEFAULT_EMBLEM_PATH } from '../services/logoService';
 
 interface ReferralA4PrintProps {
   referral: ReferralRecord;
@@ -134,6 +135,16 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
   onBack,
 }) => {
   const [showPdfHint, setShowPdfHint] = useState(false);
+  const [emblemSrc, setEmblemSrc] = useState<string>(logoService.getEmblemLogo());
+  const [imageLoadError, setImageLoadError] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = logoService.subscribe((newLogo) => {
+      setEmblemSrc(newLogo);
+      setImageLoadError(false);
+    });
+    return unsubscribe;
+  }, []);
 
   const handlePrint = () => {
     window.print();
@@ -243,7 +254,22 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
           {/* Official Lao National Header (Centred Lao Logo & Motto) */}
           <div className="text-center space-y-1 mb-2">
             <div className="flex justify-center">
-              <LaoNationalEmblem className="w-13 h-13 sm:w-14 sm:h-14 drop-shadow-xs" />
+              {!imageLoadError ? (
+                <img
+                  src={emblemSrc}
+                  alt="Lao National Emblem"
+                  className="w-13 h-13 sm:w-14 sm:h-14 object-contain drop-shadow-xs"
+                  onError={() => {
+                    if (emblemSrc !== DEFAULT_EMBLEM_PATH) {
+                      setEmblemSrc(DEFAULT_EMBLEM_PATH);
+                    } else {
+                      setImageLoadError(true);
+                    }
+                  }}
+                />
+              ) : (
+                <LaoNationalEmblem className="w-13 h-13 sm:w-14 sm:h-14 drop-shadow-xs" />
+              )}
             </div>
             <h2 className="font-bold text-xs sm:text-sm tracking-wide text-slate-900">
               ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນລາວ

@@ -19,9 +19,11 @@ import {
   ShieldCheck,
   Phone,
   Truck,
-  Download
+  Download,
+  Image as ImageIcon
 } from 'lucide-react';
 import { icd10Service } from '../services/icd10Service';
+import { logoService, DEFAULT_EMBLEM_PATH } from '../services/logoService';
 import { DistrictHospital } from '../types/referral';
 import { HospitalManagementModal } from './HospitalManagementModal';
 
@@ -36,10 +38,18 @@ export const AdminSettingsView: React.FC<AdminSettingsViewProps> = ({
   onRefreshHospitals,
   onBackToReferrals
 }) => {
-  const [activeSubtab, setActiveSubtab] = useState<'hospitals' | 'diagnosis'>('diagnosis');
+  const [activeSubtab, setActiveSubtab] = useState<'hospitals' | 'diagnosis' | 'emblem'>('diagnosis');
   
   // Hospital Modal State
   const [isHospitalModalOpen, setIsHospitalModalOpen] = useState(false);
+
+  // Logo / Emblem State
+  const [currentLogo, setCurrentLogo] = useState<string>(logoService.getEmblemLogo());
+  const [hasCustomLogo, setHasCustomLogo] = useState<boolean>(logoService.hasCustomEmblem());
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [logoSuccessMessage, setLogoSuccessMessage] = useState<string | null>(null);
+  const [logoErrorMessage, setLogoErrorMessage] = useState<string | null>(null);
+  const logoFileInputRef = useRef<HTMLInputElement>(null);
 
   // ICD-10 Stats & Upload State
   const [stats, setStats] = useState<{ count: number; lastUpdated: string | null }>({ count: 0, lastUpdated: null });
@@ -55,6 +65,58 @@ export const AdminSettingsView: React.FC<AdminSettingsViewProps> = ({
   const [isSearching, setIsSearching] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Handle Logo file selection
+  const handleLogoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setLogoErrorMessage('ກະລຸນາເລືອກໄຟລ໌ຮູບພາບ (PNG, JPG, SVG, WebP)');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setLogoErrorMessage('ຂະໜາດໄຟລ໌ໃຫຍ່ເກີນໄປ (ສູງສຸດບໍ່ເກີນ 5MB)');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      setLogoPreview(dataUrl);
+      setLogoErrorMessage(null);
+    };
+    reader.onerror = () => {
+      setLogoErrorMessage('ເກີດຂໍ້ຜິດພາດໃນການອ່ານໄຟລ໌ຮູບພາບ');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Save selected logo
+  const handleSaveLogo = () => {
+    if (!logoPreview) return;
+    try {
+      logoService.saveCustomEmblem(logoPreview);
+      setCurrentLogo(logoPreview);
+      setHasCustomLogo(true);
+      setLogoSuccessMessage('✓ ບັນທຶກຮູບກາໝາຍຊາດສຳເລັດແລ້ວ! ລະບົບຈະນຳໃຊ້ຮູບນີ້ໃນໃບສົ່ງຕໍ່ ແລະ ການພິມ PDF A4 ທຸກຄັ້ງ.');
+      setLogoPreview(null);
+      setTimeout(() => setLogoSuccessMessage(null), 5000);
+    } catch {
+      setLogoErrorMessage('ບໍ່ສາມາດບັນທຶກລົງໃນ Browser ໄດ້ (ອາດເກີນຂະໜາດ Storage)');
+    }
+  };
+
+  // Reset to default /assets/lao-emblem.png
+  const handleResetLogo = () => {
+    logoService.clearCustomEmblem();
+    setCurrentLogo(DEFAULT_EMBLEM_PATH);
+    setHasCustomLogo(false);
+    setLogoPreview(null);
+    setLogoSuccessMessage('✓ ຣີເຊັດເປັນຄ່າເລີ່ມຕົ້ນ (/assets/lao-emblem.png) ສຳເລັດແລ້ວ.');
+    setTimeout(() => setLogoSuccessMessage(null), 4000);
+  };
 
   // Load stats on mount
   const refreshStats = async () => {
@@ -188,11 +250,11 @@ R57.1,Hypovolemic shock`;
         </div>
 
         {/* Subtabs Switcher */}
-        <div className="flex items-center p-1 bg-emerald-50/60 rounded-xl border border-emerald-900/10 text-xs font-bold">
+        <div className="flex flex-wrap items-center p-1 bg-emerald-50/60 rounded-xl border border-emerald-900/10 text-xs font-bold gap-1">
           <button
             type="button"
             onClick={() => setActiveSubtab('diagnosis')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+            className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg transition-all ${
               activeSubtab === 'diagnosis'
                 ? 'bg-white text-emerald-950 border border-emerald-900/15 shadow-sm'
                 : 'text-slate-600 hover:text-emerald-950'
@@ -205,7 +267,7 @@ R57.1,Hypovolemic shock`;
           <button
             type="button"
             onClick={() => setActiveSubtab('hospitals')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+            className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg transition-all ${
               activeSubtab === 'hospitals'
                 ? 'bg-white text-emerald-950 border border-emerald-900/15 shadow-sm'
                 : 'text-slate-600 hover:text-emerald-950'
@@ -213,6 +275,19 @@ R57.1,Hypovolemic shock`;
           >
             <Building2 className="w-4 h-4 text-emerald-800" />
             <span>ຈັດການບັນຊີໂຮງໝໍເມືອງ / ສຸກສາລາ</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveSubtab('emblem')}
+            className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg transition-all ${
+              activeSubtab === 'emblem'
+                ? 'bg-white text-emerald-950 border border-emerald-900/15 shadow-sm'
+                : 'text-slate-600 hover:text-emerald-950'
+            }`}
+          >
+            <ImageIcon className="w-4 h-4 text-emerald-800" />
+            <span>ກາໝາຍຊາດ / ໂລໂກ້</span>
           </button>
         </div>
       </div>
@@ -519,6 +594,160 @@ R57.1,Hypovolemic shock`;
                   ))}
                 </tbody>
               </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= SUBTAB 3: ກາໝາຍຊາດ / ໂລໂກ້ (Emblem / Logo) ================= */}
+      {activeSubtab === 'emblem' && (
+        <div className="space-y-6">
+          
+          {/* Header Card */}
+          <div className="bg-white p-6 rounded-2xl border border-emerald-900/10 space-y-4">
+            <div>
+              <h3 className="text-base font-bold text-emerald-950 flex items-center gap-2">
+                <ImageIcon className="w-5 h-5 text-emerald-800" />
+                <span>ຈັດການຮູບກາໝາຍຊາດ ສປປ ລາວ (Lao National Emblem)</span>
+              </h3>
+              <p className="text-xs text-slate-500 mt-1">
+                ກຳນົດຮູບພາບກາໝາຍຊາດທີ່ໃຊ້ສະແດງເທິງຫົວເຈ້ຍຂອງ "ໃບສົ່ງຕໍ່ຄົນເຈັບ" (A4 Print / Save to PDF). ລະບົບຮອງຮັບທັງການອັບໂຫຼດຮູບຕົວຈິງເຂົ້າຖານຂໍ້ມູນບຣາວເຊີ ແລະ ການດຶງຈາກ Path <code className="bg-slate-100 px-1 py-0.5 rounded font-mono text-emerald-950 font-bold">/assets/lao-emblem.png</code>.
+              </p>
+            </div>
+
+            {/* Notifications */}
+            {logoSuccessMessage && (
+              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-2 text-xs font-semibold text-emerald-900">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>{logoSuccessMessage}</span>
+              </div>
+            )}
+
+            {logoErrorMessage && (
+              <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl flex items-center gap-2 text-xs font-semibold text-rose-900">
+                <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                <span>{logoErrorMessage}</span>
+              </div>
+            )}
+
+            {/* Grid Preview and Upload Zone */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+              
+              {/* Current Active Emblem Card */}
+              <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col items-center justify-center text-center space-y-3">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-600">
+                  ຮູບກາໝາຍຊາດທີ່ກຳລັງໃຊ້ງານໃນປະຈຸບັນ
+                </span>
+                
+                <div className="w-28 h-28 bg-white border border-slate-300 rounded-2xl shadow-xs p-2 flex items-center justify-center overflow-hidden">
+                  <img
+                    src={currentLogo}
+                    alt="Current Lao Emblem"
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      // Visual fallback indicator if image not found
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                    hasCustomLogo 
+                      ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                      : 'bg-slate-200 text-slate-700'
+                  }`}>
+                    {hasCustomLogo ? '✓ ໃຊ້ຮູບທີ່ອັບໂຫຼດເອງ (Custom Base64)' : 'ໃຊ້ໄຟລ໌ເລີ່ມຕົ້ນ (/assets/lao-emblem.png)'}
+                  </span>
+                  <p className="text-[11px] text-slate-400 font-mono">
+                    {hasCustomLogo ? 'ບັນທຶກໃນ LocalStorage ຂອງບຣາວເຊີ' : 'Path: /public/assets/lao-emblem.png'}
+                  </p>
+                </div>
+
+                {hasCustomLogo && (
+                  <button
+                    type="button"
+                    onClick={handleResetLogo}
+                    className="mt-2 text-xs font-semibold text-rose-700 hover:text-rose-900 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-3 py-1.5 rounded-xl transition-colors cursor-pointer"
+                  >
+                    ຣີເຊັດເປັນຄ່າເລີ່ມຕົ້ນ
+                  </button>
+                )}
+              </div>
+
+              {/* Upload New Image Card */}
+              <div className="p-5 bg-white border-2 border-dashed border-emerald-900/20 hover:border-emerald-700 rounded-2xl flex flex-col justify-between space-y-4">
+                <div className="space-y-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-950 block">
+                    ອັບໂຫຼດຮູບກາໝາຍຊາດໃໝ່ (PNG, JPG, SVG)
+                  </span>
+                  <p className="text-[11px] text-slate-500">
+                    ເລືອກໄຟລ໌ຮູບພາບ Logo ຊາດລາວ ທີ່ມີພື້ນຫຼັງໂປ່ງໃສ (Transparent PNG) ຫຼື ຄວາມລະອຽດສູງ ເພື່ອໃຫ້ພິມອອກມາຄົມຊັດທີ່ສຸດ.
+                  </p>
+                </div>
+
+                {/* Selected Preview before saving */}
+                {logoPreview ? (
+                  <div className="p-3 bg-emerald-50/50 border border-emerald-200 rounded-xl flex items-center gap-4">
+                    <img
+                      src={logoPreview}
+                      alt="New Preview"
+                      className="w-16 h-16 object-contain bg-white rounded-lg p-1 border border-emerald-300"
+                    />
+                    <div className="space-y-1">
+                      <span className="text-xs font-bold text-emerald-950 block">
+                        ຕົວຢ່າງຮູບທີ່ເລືອກ
+                      </span>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={handleSaveLogo}
+                          className="px-3 py-1 bg-emerald-800 hover:bg-emerald-900 text-white rounded-lg text-xs font-bold cursor-pointer transition-colors shadow-xs"
+                        >
+                          ບັນທຶກຮູບນີ້
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setLogoPreview(null)}
+                          className="px-3 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold cursor-pointer transition-colors"
+                        >
+                          ຍົກເລີກ
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-4">
+                    <input
+                      ref={logoFileInputRef}
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                      onChange={handleLogoFileChange}
+                      className="hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => logoFileInputRef.current?.click()}
+                      className="flex items-center gap-2 px-4 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold rounded-xl cursor-pointer transition-colors shadow-xs"
+                    >
+                      <Upload className="w-4 h-4" />
+                      <span>ເລືອກໄຟລ໌ຮູບພາບຈາກເຄື່ອງ</span>
+                    </button>
+                    <span className="text-[10px] text-slate-400 mt-2">
+                      ຮອງຮັບ PNG, JPG, SVG, WebP (ສູງສຸດ 5MB)
+                    </span>
+                  </div>
+                )}
+
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-[10.5px] text-slate-600 space-y-1">
+                  <p className="font-bold text-slate-700">💡 ສຳລັບການ Deploy ຂຶ້ນ Cloudflare Pages:</p>
+                  <p>
+                    ທ່ານສາມາດນຳໄຟລ໌ຮູບພາບ <code className="font-mono text-emerald-900 font-bold">lao-emblem.png</code> ໄປວາງໄວ້ໃນ Folder <code className="font-mono text-emerald-900 font-bold">public/assets/</code> ຂອງ Project ໄດ້ໂດຍກົງ. ເວັບໄຊຈະດຶງຮູບນັ້ນມານຳໃຊ້ແບບຖາວອນ.
+                  </p>
+                </div>
+
+              </div>
+
             </div>
           </div>
         </div>
