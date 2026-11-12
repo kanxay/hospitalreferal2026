@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { EMERGENCY_ICD10_SEEDS } from '../data/emergencyIcd10Seed';
+
 export interface Icd10Record {
   code: string;
   name: string;
@@ -16,6 +18,7 @@ const META_STORE = 'icd10_meta';
 
 class Icd10Service {
   private dbPromise: Promise<IDBDatabase> | null = null;
+  private isAutoSeeding = false;
 
   private getDb(): Promise<IDBDatabase> {
     if (this.dbPromise) return this.dbPromise;
@@ -77,6 +80,77 @@ class Icd10Service {
   }
 
   /**
+   * Automatically seeds diagnosis dataset if client IndexedDB is currently empty.
+   * 1. Checks if public `/assets/icd10.csv` exists and downloads it in background.
+   * 2. If no network or file missing, immediately seeds the built-in emergency ICD-10 dataset
+   * so every user on every browser/device has instant search capabilities.
+   */
+  async ensureAutoSeeded(): Promise<{ count: number; lastUpdated: string | null }> {
+    const stats = await this.getStats();
+    // If already fully populated with full dataset (> 10,000 rows), nothing to do
+    if (stats.count > 10000) return stats;
+
+    if (this.isAutoSeeding) {
+      return stats;
+    }
+
+    this.isAutoSeeding = true;
+    try {
+      // Step 1: Attempt to load from public asset /assets/icd10.csv or /icd10.csv
+      try {
+        let response = await fetch('/assets/icd10.csv');
+        if (!response.ok) {
+          response = await fetch('/icd10.csv');
+        }
+        if (response.ok) {
+          const csvText = await response.text();
+          if (csvText && csvText.trim().length > 100) {
+            await this.importCsvText(csvText);
+            this.isAutoSeeding = false;
+            return await this.getStats();
+          }
+        }
+      } catch (fetchErr) {
+        console.info('No /assets/icd10.csv found or fetch failed, checking emergency seed:', fetchErr);
+      }
+
+      // If we already have existing seeds (e.g. 80 codes), keep them
+      if (stats.count > 0) {
+        return stats;
+      }
+
+      // Step 2: Seed built-in emergency ICD-10 codes
+      const db = await this.getDb();
+      const records: Icd10Record[] = EMERGENCY_ICD10_SEEDS.map((s) => ({
+        code: s.code.toUpperCase(),
+        name: s.name,
+        nameLower: s.name.toLowerCase(),
+      }));
+
+      await this.insertBatch(db, records);
+
+      const txMeta = db.transaction(META_STORE, 'readwrite');
+      const storeMeta = txMeta.objectStore(META_STORE);
+      storeMeta.put({
+        key: 'stats',
+        lastUpdated: new Date().toISOString(),
+        source: 'built_in_emergency_seed',
+      });
+
+      await new Promise((resolve) => {
+        txMeta.oncomplete = resolve;
+      });
+
+      return await this.getStats();
+    } catch (err) {
+      console.warn('Failed to auto-seed ICD-10 data:', err);
+      return stats;
+    } finally {
+      this.isAutoSeeding = false;
+    }
+  }
+
+  /**
    * Parse CSV line handling potential quoted commas: "A00.0","Cholera, unspecified"
    */
   private parseCsvLine(line: string): [string, string] | null {
@@ -122,10 +196,20 @@ class Icd10Service {
    */
   async importCsvFile(
     file: File,
-    onProgress: (loaded: number, totalEst: number) => void
+    onProgress?: (loaded: number, totalEst: number) => void
+  ): Promise<{ count: number }> {
+    const text = await file.text();
+    return this.importCsvText(text, onProgress);
+  }
+
+  /**
+   * Parses CSV string and batch inserts records into IndexedDB
+   */
+  async importCsvText(
+    text: string,
+    onProgress?: (loaded: number, totalEst: number) => void
   ): Promise<{ count: number }> {
     const db = await this.getDb();
-    const text = await file.text();
     const lines = text.split(/\r?\n/);
 
     const totalLines = lines.length;
@@ -163,7 +247,7 @@ class Icd10Service {
         await this.insertBatch(db, currentBatch);
         savedCount += currentBatch.length;
         currentBatch = [];
-        onProgress(savedCount, totalLines - startIndex);
+        if (onProgress) onProgress(savedCount, totalLines - startIndex);
         // Yield to browser event loop
         await new Promise((r) => setTimeout(r, 0));
       }
@@ -173,7 +257,7 @@ class Icd10Service {
     if (currentBatch.length > 0) {
       await this.insertBatch(db, currentBatch);
       savedCount += currentBatch.length;
-      onProgress(savedCount, savedCount);
+      if (onProgress) onProgress(savedCount, savedCount);
     }
 
     // Save timestamp metadata

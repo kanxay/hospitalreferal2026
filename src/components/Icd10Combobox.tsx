@@ -34,10 +34,10 @@ export const Icd10Combobox: React.FC<Icd10ComboboxProps> = ({
     setQuery(value);
   }, [value]);
 
-  // Check if database has any codes loaded
+  // Check if database has any codes loaded, and ensure auto-seeded
   useEffect(() => {
     let isMounted = true;
-    icd10Service.getStats().then((stats) => {
+    icd10Service.ensureAutoSeeded().then((stats) => {
       if (isMounted) {
         setHasDatabaseCodes(stats.count > 0);
       }

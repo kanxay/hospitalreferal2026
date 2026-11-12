@@ -20,7 +20,8 @@ import {
   Phone,
   Truck,
   Download,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Info
 } from 'lucide-react';
 import { icd10Service } from '../services/icd10Service';
 import { logoService, DEFAULT_EMBLEM_PATH } from '../services/logoService';
@@ -118,10 +119,17 @@ export const AdminSettingsView: React.FC<AdminSettingsViewProps> = ({
     setTimeout(() => setLogoSuccessMessage(null), 4000);
   };
 
-  // Load stats on mount
+  // Load stats on mount and auto-seed from public assets if empty
   const refreshStats = async () => {
-    const s = await icd10Service.getStats();
-    setStats(s);
+    try {
+      let s = await icd10Service.getStats();
+      if (s.count === 0) {
+        s = await icd10Service.ensureAutoSeeded();
+      }
+      setStats(s);
+    } catch (err) {
+      console.warn('Failed to refresh ICD-10 stats:', err);
+    }
   };
 
   useEffect(() => {
@@ -153,6 +161,33 @@ export const AdminSettingsView: React.FC<AdminSettingsViewProps> = ({
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
+    }
+  };
+
+  // Sync from public /assets/icd10.csv
+  const handleSyncFromPublicAsset = async () => {
+    setIsUploading(true);
+    setUploadProgress({ loaded: 0, total: 0 });
+    setUploadSuccessMessage(null);
+    setUploadError(null);
+
+    try {
+      const response = await fetch('/assets/icd10.csv');
+      if (!response.ok) {
+        throw new Error(`ບໍ່ພົບໄຟລ໌ /assets/icd10.csv (HTTP ${response.status})`);
+      }
+      const text = await response.text();
+      const result = await icd10Service.importCsvText(text, (loaded, total) => {
+        setUploadProgress({ loaded, total });
+      });
+
+      await refreshStats();
+      setUploadSuccessMessage(`ດຶງຂໍ້ມູນຈາກ /assets/icd10.csv ສຳເລັດແລ້ວ ທັງໝົດ ${result.count.toLocaleString()} ລາຍການ!`);
+    } catch (err: any) {
+      console.error('Asset sync failed:', err);
+      setUploadError(`ເກີດຂໍ້ຜິດພາດໃນການດຶງຂໍ້ມູນ: ${err?.message || 'ບໍ່ສາມາດໂຫຼດໄຟລ໌ໄດ້'}`);
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -435,7 +470,7 @@ R57.1,Hypovolemic shock`;
                   <div className="w-12 h-12 rounded-2xl bg-emerald-100/70 text-emerald-800 flex items-center justify-center mx-auto">
                     <FileText className="w-6 h-6" />
                   </div>
-                  <div>
+                  <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
                     <label
                       htmlFor="icd10-csv-input"
                       className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-emerald-800 hover:bg-emerald-900 rounded-xl transition-colors shadow-sm"
@@ -443,6 +478,17 @@ R57.1,Hypovolemic shock`;
                       <Upload className="w-4 h-4" />
                       <span>ເລືອກໄຟລ໌ CSV ລະຫັດພະຍາດ (Browse CSV File)</span>
                     </label>
+
+                    <button
+                      type="button"
+                      onClick={handleSyncFromPublicAsset}
+                      disabled={isUploading}
+                      className="inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold text-emerald-900 bg-emerald-100/80 hover:bg-emerald-200 border border-emerald-300 rounded-xl transition-colors cursor-pointer"
+                      title="ດຶງໄຟລ໌ທີ່ຝັງໄວ້ໃນ public/assets/icd10.csv ຂອງເວັບໄຊ"
+                    >
+                      <RefreshCw className="w-4 h-4" />
+                      <span>ດຶງຂໍ້ມູນຈາກ /assets/icd10.csv</span>
+                    </button>
                   </div>
                   <p className="text-xs text-slate-500">
                     ຫຼື ລາກໄຟລ໌ CSV (ເຊັ່ນ ໄຟລ໌ 74,889 ແຖວ) ມາວາງລົງບ່ອນນີ້
@@ -452,6 +498,21 @@ R57.1,Hypovolemic shock`;
                   </p>
                 </div>
               )}
+            </div>
+
+            {/* Cloudflare Pages / Deployment Guide Callout */}
+            <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-2 text-slate-700">
+              <p className="font-bold text-slate-900 flex items-center gap-1.5">
+                <Info className="w-4 h-4 text-emerald-700" />
+                <span>ຄຳແນະນຳສຳລັບການນຳໃຊ້ຖາວອນ (Cloudflare Pages / Vercel):</span>
+              </p>
+              <p className="leading-relaxed">
+                ເນື່ອງຈາກລະບົບ Static Hosting ເກັບ IndexedDB ແຍກຕາມ Browser ແຕ່ລະເຄື່ອງ, ເພື່ອໃຫ້ <strong>User ທຸກຄົນໃນທຸກອຸປະກອນ</strong> ເຫັນລະຫັດ ICD-10 ຄົບຖ້ວນທັນທີໂດຍບໍ່ຕ້ອງອັບໂຫຼດຊ້ຳ:
+              </p>
+              <ul className="list-disc list-inside space-y-1 font-mono text-[11px] text-slate-600 pl-1">
+                <li>ພຽງແຕ່ວາງໄຟລ໌ <code>icd10.csv</code> (74,889 ແຖວ) ໄວ້ໃນໂຟນເດີ <code>public/assets/icd10.csv</code> ໃນ Source Code.</li>
+                <li>ລະບົບຈະ Auto-Sync ດຶງລະຫັດພະຍາດທັງໝົດລົງ Browser ຂອງ User ແຕ່ລະຄົນໂດຍອັດຕະໂນມັດໃນຄັ້ງທຳອິດທີ່ເປີດເວັບ!</li>
+              </ul>
             </div>
           </div>
 

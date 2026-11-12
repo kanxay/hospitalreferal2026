@@ -539,7 +539,7 @@ export const ReferralA4Print: React.FC<ReferralA4PrintProps> = ({
                   </p>
                 </div>
                 <div>
-                  <p><span className="font-bold text-slate-800">ພະແນກປາຍທາງ: </span>{referral.receivingDepartment} (ໂຮງໝໍແຂວງຈຳປາສັກ)</p>
+                  <p><span className="font-bold text-slate-800">ພະແນກປາຍທາງ: </span>{referral.receivingDepartment}</p>
                   <p><span className="font-bold text-slate-800">ຜູ້ຮັບປາຍທາງ ER: </span>{referral.targetCoordinator || 'ແພດຍາດສຸກເສີນ'}</p>
                 </div>
               </div>
